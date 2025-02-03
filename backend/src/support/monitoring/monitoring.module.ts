@@ -1,8 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
-import { AppController } from './app.controller';
-import { MonitoringModule } from './support/monitoring/monitoring.module';
+import { HealthCheckController } from './health-check/health-check.controller';
 
 @Module({
   imports: [
@@ -12,10 +11,8 @@ import { MonitoringModule } from './support/monitoring/monitoring.module';
       serveStaticOptions: {
         fallthrough: false,
       },
-    
     }),
-    MonitoringModule
   ],
-  controllers: [AppController],
+  controllers: [HealthCheckController],
 })
-export class AppModule {}
+export class MonitoringModule {}
