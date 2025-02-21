@@ -1,38 +1,44 @@
-import React, { useEffect, useState } from "react"
-import { socket } from "../socket";
+import React, { useContext, useEffect, useState } from "react"
+import { SocketContext } from "./web-socket/web-socket.context";
+// import { socket } from "../socket";
 
 export const SocketConnection: React.FC = () => {
-  const [isConnected, setIsConnected] = useState(socket.connected);
-  const [fooEvents, setFooEvents] = useState<unknown[]>([]);
+  // const [isConnected, setIsConnected] = useState(socket.connected);
+  // const [fooEvents, setFooEvents] = useState<unknown[]>([]);
 
-  useEffect(() => {
-    function onConnect() {
-      setIsConnected(true);
-    }
+  const socket = useContext(SocketContext)
 
-    function onDisconnect() {
-      setIsConnected(false);
-    }
+  // useEffect(() => {
+  //   function onConnect() {
+  //     setIsConnected(true);
+  //   }
 
-    function onFooEvent(value: unknown[]) {
-      setFooEvents(previous => [...previous, value]);
-    }
+  //   function onDisconnect() {
+  //     setIsConnected(false);
+  //   }
 
-    socket.on('connect', onConnect);
-    socket.on('disconnect', onDisconnect);
-    socket.on('foo', onFooEvent);
+  //   function onFooEvent(value: unknown[]) {
+  //     setFooEvents(previous => [...previous, value]);
+  //   }
 
-    return () => {
-      socket.off('connect', onConnect);
-      socket.off('disconnect', onDisconnect);
-      socket.off('foo', onFooEvent);
-    };
-  }, []);
+  //   socket.on('connect', onConnect);
+  //   socket.on('disconnect', onDisconnect);
+  //   socket.on('foo', onFooEvent);
+
+  //   return () => {
+  //     socket.off('connect', onConnect);
+  //     socket.off('disconnect', onDisconnect);
+  //     socket.off('foo', onFooEvent);
+  //   };
+  // }, []);
+
+
 
   return (
     <div className="App">
-      <ConnectionState isConnected={isConnected} />
-      <Events events={fooEvents} />
+      <ConnectionState isConnected={socket? socket.isConnected : null} />
+      <Events events={socket ? [socket.lastReceived]:[]} />
+      <p>{socket? socket.createdOn?.toISOString() : "Socket is null"}</p>
       {/* <ConnectionManager /> */}
     </div>)
 }
@@ -40,6 +46,6 @@ export const SocketConnection: React.FC = () => {
 const Events = (props: { events: unknown[] }) => {
   return <p>{props.events.join(", ")}</p>
 }
-const ConnectionState = (props: { isConnected: boolean }) => {
-  return <p>{props.isConnected ? "IS connected" : "is not connected"}</p>
+const ConnectionState = (props: { isConnected: boolean|null }) => {
+  return <p>{props.isConnected ? "IS connected" : props.isConnected === false? "is not connected" : "Was null"}</p>
 }
