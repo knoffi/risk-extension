@@ -37,7 +37,7 @@ export const SocketConnection: React.FC = () => {
   return (
     <div className="App">
       <ConnectionState isConnected={socket? socket.isConnected : null} />
-      <Events events={socket ? [socket.lastReceived]:[]} />
+      <Events events={socket ? [JSON.stringify(socket.lastReceived)]:[]} />
       <p>{socket? socket.createdOn?.toISOString() : "Socket is null"}</p>
       {/* <ConnectionManager /> */}
     </div>)

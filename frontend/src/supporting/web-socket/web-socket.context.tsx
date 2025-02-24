@@ -33,17 +33,11 @@ export const SocketProvider = (props: { children: ReactNode[] | ReactNode }) => 
     const [isReady, setIsReady] = useState<boolean>(false)
     const [value, setValue] = useState<ReceivedDto>(null)
 
-    const ws = useRef<null|SocketIO>(null)
+    const ws = useRef<null | SocketIO>(null)
 
 
     useEffect(() => {
         const wsSocket = io('http://localhost:3001');
-
-        wsSocket.emit("send_message", {
-            senderId: "123",
-            receiverId: "456",
-            message: "BBBBB"
-        });
 
         wsSocket.on("connect", () => {
             console.error("Connected!")
@@ -60,17 +54,16 @@ export const SocketProvider = (props: { children: ReactNode[] | ReactNode }) => 
 
         wsSocket.onAny((event, ...args) => setValue({ event, args }))
 
-        wsSocket.connect();
-
         ws.current = wsSocket
 
         return () => void wsSocket.disconnect();
     }, [])
 
-    const throwSocketUnreadyError = () => {throw new Error("Socket not ready")}
+    const throwSocketUnreadyError = () => { throw new Error("Socket not ready") }
 
-    const socketClient = {createdOn: new Date(), emit: ws.current?.emit.bind(ws.current)??throwSocketUnreadyError, isConnected: isReady, lastReceived: value,on:ws.current?.on?? throwSocketUnreadyError, onLifecycle: ws.current?.on?? throwSocketUnreadyError
+    const socketClient = {
+        createdOn: new Date(), emit: ws.current?.emit.bind(ws.current) ?? throwSocketUnreadyError, isConnected: isReady, lastReceived: value, on: ws.current?.on ?? throwSocketUnreadyError, onLifecycle: ws.current?.on ?? throwSocketUnreadyError
     } satisfies Socket
 
-    return <SocketContext.Provider value={socketClient|| null}>{props.children}</SocketContext.Provider>
+    return <SocketContext.Provider value={socketClient || null}>{props.children}</SocketContext.Provider>
 }
