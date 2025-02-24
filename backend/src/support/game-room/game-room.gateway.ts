@@ -1,4 +1,5 @@
 import {
+  ConnectedSocket,
     MessageBody,
     SubscribeMessage,
     WebSocketGateway,
@@ -7,7 +8,7 @@ import {
   } from '@nestjs/websockets';
   import { from, Observable } from 'rxjs';
   import { map } from 'rxjs/operators';
-  import { Server } from 'socket.io';
+  import { Server, Socket } from 'socket.io';
   
   @WebSocketGateway({
     cors: {
@@ -28,8 +29,25 @@ import {
       return data;
     }
 
+    @SubscribeMessage('response_message')
+    async shouldNotHappen(@MessageBody() data: number): Promise<number> {
+      console.log("WEIRD!")
+      
+      return undefined
+    }
+
+    handleConnection(socket: Socket) {
+      console.log(`Socket connected: ${socket.id}.`);
+    }
+  
+    // it will be handled when a client disconnects from the server
+    handleDisconnect(socket: Socket) {
+      console.log(`Socket disconnected: ${socket.id}`);
+    }
+
     @SubscribeMessage('send_message')
-    logMessage(@MessageBody() data: unknown): void {
-      console.log("Received: "+ JSON.stringify(data));
+    logMessage(@MessageBody() data: unknown, @ConnectedSocket() socket:Socket): void {
+      this.server.emit("response_message",{message:"loool"})
+      return undefined;
     }
   }
