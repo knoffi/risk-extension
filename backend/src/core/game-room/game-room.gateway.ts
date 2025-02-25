@@ -46,8 +46,8 @@ export class GameRoomGateway {
   }
 
   @SubscribeMessage('send_message')
-  logMessage(@MessageBody() data: unknown, @ConnectedSocket() socket: Socket): void {
-    this.server.emit("response_message", { message: "loool" })
+  logMessage(@MessageBody() data: {senderId:string,message:string}, @ConnectedSocket() socket: Socket): void {
+    this.server.emit("response_message", { message: `User ${data.senderId} says: ${data.message}` })
     return undefined;
   }
 }
