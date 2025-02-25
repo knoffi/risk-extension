@@ -3,12 +3,12 @@ import {
   MessageBody,
   SubscribeMessage,
   WebSocketGateway,
-  WebSocketServer,
-  WsResponse,
+  WebSocketServer
 } from '@nestjs/websockets';
-import { from, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { Server, Socket } from 'socket.io';
+import { ToClient } from '../../../../shared/socket/events';
+import { MESSAGE_TO_CLIENT_EVENT } from '../../../../shared/socket/to-client/message.dto';
+import { MESSAGE_FROM_CLIENT_EVENT, MessageFromClient } from '../../../../shared/socket/to-server/message.dto';
 
 @WebSocketGateway({
   cors: {
@@ -17,37 +17,24 @@ import { Server, Socket } from 'socket.io';
 })
 export class GameRoomGateway {
   @WebSocketServer()
-  server: Server;
-
-  @SubscribeMessage('events')
-  findAll(@MessageBody() data: any): Observable<WsResponse<number>> {
-    return from([1, 2, 3]).pipe(map(item => ({ event: 'events', data: item })));
-  }
-
-  @SubscribeMessage('identity')
-  async identity(@MessageBody() data: number): Promise<number> {
-    return data;
-  }
-
-  @SubscribeMessage('response_message')
-  async shouldNotHappen(@MessageBody() data: number): Promise<number> {
-    console.log("WEIRD!")
-
-    return undefined
-  }
+  server: Server & { emit: (a: "foo", b: object, c: object) => boolean };
 
   handleConnection(socket: Socket) {
     console.log(`Socket connected: ${socket.id}.`);
   }
 
-  // it will be handled when a client disconnects from the server
   handleDisconnect(socket: Socket) {
     console.log(`Socket disconnected: ${socket.id}`);
   }
 
-  @SubscribeMessage('send_message')
-  logMessage(@MessageBody() data: {senderId:string,message:string}, @ConnectedSocket() socket: Socket): void {
-    this.server.emit("response_message", { message: `User ${data.senderId} says: ${data.message}` })
+  @SubscribeMessage(MESSAGE_FROM_CLIENT_EVENT)
+  logMessage(@MessageBody() data: MessageFromClient, @ConnectedSocket() socket: Socket): void {
+    console.log("Incoming message from socket id " + socket.id)
+    this.emitToAll(MESSAGE_TO_CLIENT_EVENT, { message: `User ${data.senderId} says: ${data.message}` })
     return undefined;
+  }
+
+  private emitToAll<T extends ToClient>(event: T["event"], payload: T["payload"]) {
+    this.server.emit(event, payload)
   }
 }
