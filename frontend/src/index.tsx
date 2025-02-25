@@ -1,16 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App.tsx';
-import * as serviceWorkerRegistration from './serviceWorkerRegistration.ts';
-import reportWebVitals from './reportWebVitals.ts';
+import App from './App';
+import * as serviceWorkerRegistration from './service-worker-registration';
+import reportWebVitals from './report-web-vitals';
+import { SocketProvider } from './supporting/web-socket/web-socket.context';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <App />
+    <SocketProvider>
+      <App />
+    </SocketProvider>
   </React.StrictMode>
 );
 
