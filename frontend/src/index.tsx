@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import * as serviceWorkerRegistration from './serviceWorkerRegistration';
-import reportWebVitals from './reportWebVitals';
+import * as serviceWorkerRegistration from './service-worker-registration';
+import reportWebVitals from './report-web-vitals';
 import { SocketProvider } from './supporting/web-socket/web-socket.context';
 
 const root = ReactDOM.createRoot(
