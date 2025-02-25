@@ -5,10 +5,10 @@ import {
   WebSocketGateway,
   WebSocketServer
 } from '@nestjs/websockets';
+import { ToClient } from '@shared/socket/events';
+import { MESSAGE_TO_CLIENT_EVENT } from '@shared/socket/to-client/message.dto';
+import { MESSAGE_FROM_CLIENT_EVENT, MessageFromClient } from '@shared/socket/to-server/message.dto';
 import { Server, Socket } from 'socket.io';
-import { ToClient } from '../../../../shared/socket/events';
-import { MESSAGE_TO_CLIENT_EVENT } from '../../../../shared/socket/to-client/message.dto';
-import { MESSAGE_FROM_CLIENT_EVENT, MessageFromClient } from '../../../../shared/socket/to-server/message.dto';
 
 @WebSocketGateway({
   cors: {
