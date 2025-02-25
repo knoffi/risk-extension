@@ -6,15 +6,11 @@ import { defaultConfigService } from "../config/config.service";
 type SocketIO = ReturnType<typeof io>;
 type LifecycleEvent = "connect" | "connect_error" | "disconnect";
 type LifecycleListener = () => ReturnType<SocketIO["on"]>;
-type SentCustomEvent = "exception" | "event" | "send_message"
-type ReceivedCustomEvent = never
-type CustomListener = (...args: any[]) => ReturnType<SocketIO["on"]>
-
-type SendMessage = string
-type ReceivedDto = any
+type CustomEvent = "exception" | "response_message"
+type CustomListener = (...args: any[]) => void
 
 interface Socket {
-    on: (event: SentCustomEvent, listener: CustomListener) => void;
+    on: (event: CustomEvent, listener: CustomListener) => void;
     // Workaround for bad framework typing
     onLifecycle: (event: LifecycleEvent, listener: LifecycleListener) => void;
     isConnected: boolean;
@@ -24,7 +20,6 @@ interface Socket {
      */
     id?: string,
     emit: SocketIO["emit"],
-    lastReceived: ReceivedDto | null,
 }
 
 export const SocketContext = createContext<Socket | null>(null);
@@ -32,7 +27,6 @@ export const SocketContext = createContext<Socket | null>(null);
 export const SocketProvider = (props: { children: ReactNode[] | ReactNode }) => {
 
     const [isReady, setIsReady] = useState<boolean>(false)
-    const [value, setValue] = useState<ReceivedDto>(null)
 
     const ws = useRef<null | SocketIO>(null)
 
@@ -42,19 +36,18 @@ export const SocketProvider = (props: { children: ReactNode[] | ReactNode }) => 
         const wsSocket = io(url);
 
         wsSocket.on("connect", () => {
-            console.error("Connected!")
             setIsReady(true);
         })
         wsSocket.on("connect_error", () => {
+            // TODO: Implement Error Toast and/or Loading Spinner
             console.error("Connect error!")
             setIsReady(false);
         })
         wsSocket.on("disconnect", () => {
+            // TODO: Implement Error Toast and/or Loading Spinner
             console.error("Disconnected!")
             setIsReady(false);
         })
-
-        wsSocket.onAny((event, ...args) => setValue({ event, args }))
 
         ws.current = wsSocket
 
@@ -63,9 +56,9 @@ export const SocketProvider = (props: { children: ReactNode[] | ReactNode }) => 
 
     const throwSocketUnreadyError = () => { throw new Error("Socket not ready") }
 
-    const socketClient = {
-        createdOn: new Date(), emit: ws.current?.emit.bind(ws.current) ?? throwSocketUnreadyError, isConnected: isReady, lastReceived: value, on: ws.current?.on ?? throwSocketUnreadyError, onLifecycle: ws.current?.on ?? throwSocketUnreadyError
-    } satisfies Socket
+    const socketClient: Socket = {
+        createdOn: new Date(), emit: ws.current?.emit.bind(ws.current) ?? throwSocketUnreadyError, isConnected: isReady, on: ws.current?.on.bind(ws.current) ?? throwSocketUnreadyError, onLifecycle: ws.current?.on.bind(ws.current) ?? throwSocketUnreadyError
+    }
 
-    return <SocketContext.Provider value={socketClient || null}>{props.children}</SocketContext.Provider>
+    return <SocketContext.Provider value={socketClient.isConnected? socketClient : null}>{props.children}</SocketContext.Provider>
 }

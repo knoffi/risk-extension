@@ -1,30 +1,26 @@
-import React, { useContext } from 'react'; 
+import React, { useContext } from 'react';
 import { SocketContext } from '../../../supporting/web-socket/web-socket.context';
-
-// Establish a socket connection to the server at the specified URL
 
 export function SendMessage() {
 
-  const foo = useContext(SocketContext)
+  const socket = useContext(SocketContext)
 
   const sendMessage = async () => {
 
-    if (foo) {
-      foo.emit("send_message", {
-        senderId: "123", receiverId: "456",
-        message: "ABCDEFG"
-      })
-    }
-    else {
-      // TODO: Show error toast instead
-      console.error("NO Message!")
+    if (!socket || !socket.isConnected) {
+      // TODO: Show error toast instead, if button is disabled and we still get here
+      throw new Error("Socket missing or disconnected")
     }
 
+    socket.emit("send_message", {
+      senderId: "123", receiverId: "456",
+      message: "ABCDEFG"
+    })
   }
 
   return (
     <div>
-      {foo != null ? <button onClick={sendMessage}>send message!!!</button> : <p>Socket missing</p>}
+      <button onClick={sendMessage} disabled={socket == null}>Send Message</button> 
     </div>
   );
 }

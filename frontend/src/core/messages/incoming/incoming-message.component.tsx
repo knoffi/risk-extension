@@ -1,51 +1,38 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { SocketContext } from "../../../supporting/web-socket/web-socket.context";
-// import { socket } from "../socket";
 
 export const IncomingMessage: React.FC = () => {
-  // const [isConnected, setIsConnected] = useState(socket.connected);
-  // const [fooEvents, setFooEvents] = useState<unknown[]>([]);
 
+  const [received, setReceived] = useState<object | null>(null);
   const socket = useContext(SocketContext)
+  useEffect(() => {
+    console.error("I set the socket with " + socket?.createdOn)
+    socket?.on("response_message", (payload) => {
+      console.error(" I got something!")
+      setObjectOrThrow(payload,setReceived)
+    })
 
-  // useEffect(() => {
-  //   function onConnect() {
-  //     setIsConnected(true);
-  //   }
-
-  //   function onDisconnect() {
-  //     setIsConnected(false);
-  //   }
-
-  //   function onFooEvent(value: unknown[]) {
-  //     setFooEvents(previous => [...previous, value]);
-  //   }
-
-  //   socket.on('connect', onConnect);
-  //   socket.on('disconnect', onDisconnect);
-  //   socket.on('foo', onFooEvent);
-
-  //   return () => {
-  //     socket.off('connect', onConnect);
-  //     socket.off('disconnect', onDisconnect);
-  //     socket.off('foo', onFooEvent);
-  //   };
-  // }, []);
-
-
+  }, [socket])
 
   return (
     <div className="App">
       <ConnectionState isConnected={socket ? socket.isConnected : null} />
-      <Events events={socket ? [JSON.stringify(socket.lastReceived)] : []} />
+      <LastReceived events={received ? [JSON.stringify(received)] : []} />
       <p>{socket ? socket.createdOn?.toISOString() : "Socket is null"}</p>
-      {/* <ConnectionManager /> */}
     </div>)
 }
 
-const Events = (props: { events: unknown[] }) => {
+const LastReceived = (props: { events: unknown[] }) => {
   return <p>{props.events.join(", ")}</p>
 }
 const ConnectionState = (props: { isConnected: boolean | null }) => {
   return <p>{props.isConnected ? "IS connected" : props.isConnected === false ? "is not connected" : "Was null"}</p>
+}
+
+function setObjectOrThrow(value: unknown, setObjectValue: (newValue: object) => void) {
+  if (value == null || typeof value != "object")
+    throw new Error("Value is not an object: " + value)
+
+  setObjectValue(value)
+
 }
