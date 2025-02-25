@@ -1,5 +1,6 @@
 import { createContext, ReactNode, useEffect, useRef, useState } from "react";
 import { io } from "socket.io-client";
+import { defaultConfigService } from "../config/config.service";
 
 
 type SocketIO = ReturnType<typeof io>;
@@ -37,7 +38,8 @@ export const SocketProvider = (props: { children: ReactNode[] | ReactNode }) => 
 
 
     useEffect(() => {
-        const wsSocket = io('http://localhost:3001');
+        const url = defaultConfigService.getSocketUrl();
+        const wsSocket = io(url);
 
         wsSocket.on("connect", () => {
             console.error("Connected!")
