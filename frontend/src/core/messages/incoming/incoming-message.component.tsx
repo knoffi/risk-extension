@@ -6,9 +6,7 @@ export const IncomingMessage: React.FC = () => {
   const [received, setReceived] = useState<object | null>(null);
   const socket = useContext(SocketContext)
   useEffect(() => {
-    console.error("I set the socket with " + socket?.createdOn)
     socket?.on("response_message", (payload) => {
-      console.error(" I got something!")
       setObjectOrThrow(payload,setReceived)
     })
 
@@ -34,5 +32,4 @@ function setObjectOrThrow(value: unknown, setObjectValue: (newValue: object) => 
     throw new Error("Value is not an object: " + value)
 
   setObjectValue(value)
-
 }
