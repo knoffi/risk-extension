@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { SocketContext } from "../../../supporting/web-socket/web-socket.context";
-import { MessageFromServer } from "../../../../../shared/socket/to-client/message.dto";
+import { MessageFromServer } from "@shared/socket/to-client/message.dto";
 
 export const IncomingMessage: React.FC = () => {
 

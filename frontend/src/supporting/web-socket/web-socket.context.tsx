@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useEffect, useRef, useState } from "react";
 import { io } from "socket.io-client";
 import { defaultConfigService } from "../config/config.service";
-import { FromServer, ToServer } from "../../../../shared/socket/events";
+import { FromServer, ToServer } from "@shared/socket/events";
 
 
 type SocketIO = ReturnType<typeof io>;
