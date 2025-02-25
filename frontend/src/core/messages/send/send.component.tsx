@@ -16,7 +16,6 @@ export function SendMessage() {
 
     socket.emit("send_message", {
       senderId:senderId.current,
-      receiverId: "456",
       message: msg
     })
   }

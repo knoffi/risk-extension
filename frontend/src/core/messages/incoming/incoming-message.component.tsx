@@ -1,13 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import { SocketContext } from "../../../supporting/web-socket/web-socket.context";
+import { MessageFromServer } from "../../../../../shared/socket/to-client/message.dto";
 
 export const IncomingMessage: React.FC = () => {
 
-  const [received, setReceived] = useState<object | null>(null);
+  const [received, setReceived] = useState<MessageFromServer | null>(null);
   const socket = useContext(SocketContext)
   useEffect(() => {
     socket?.on("response_message", (payload) => {
-      setObjectOrThrow(payload,setReceived)
+      setReceived(payload)
     })
 
   }, [socket])
@@ -25,11 +26,4 @@ const LastReceived = (props: { events: unknown[] }) => {
 }
 const ConnectionState = (props: { isConnected: boolean | null }) => {
   return <p>{props.isConnected ? "IS connected" : props.isConnected === false ? "is not connected" : "Was null"}</p>
-}
-
-function setObjectOrThrow(value: unknown, setObjectValue: (newValue: object) => void) {
-  if (value == null || typeof value != "object")
-    throw new Error("Value is not an object: " + value)
-
-  setObjectValue(value)
 }
