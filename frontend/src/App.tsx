@@ -1,13 +1,13 @@
 import './App.css';
-import { SocketButton } from './supporting/SocketButton';
-import { SocketConnection } from './supporting/SocketConnection';
+import { SendMessage } from './core/messages/send/send.component';
+import { IncomingMessage } from './core/messages/incoming/incoming-message.component';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <SocketConnection/>
-        <SocketButton/>
+        <IncomingMessage/>
+        <SendMessage/>
       </header>
     </div>
   );

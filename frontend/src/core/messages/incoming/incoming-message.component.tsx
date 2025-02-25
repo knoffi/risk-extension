@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useState } from "react"
-import { SocketContext } from "./web-socket/web-socket.context";
+import React, { useContext } from "react";
+import { SocketContext } from "../../../supporting/web-socket/web-socket.context";
 // import { socket } from "../socket";
 
-export const SocketConnection: React.FC = () => {
+export const IncomingMessage: React.FC = () => {
   // const [isConnected, setIsConnected] = useState(socket.connected);
   // const [fooEvents, setFooEvents] = useState<unknown[]>([]);
 
@@ -36,9 +36,9 @@ export const SocketConnection: React.FC = () => {
 
   return (
     <div className="App">
-      <ConnectionState isConnected={socket? socket.isConnected : null} />
-      <Events events={socket ? [JSON.stringify(socket.lastReceived)]:[]} />
-      <p>{socket? socket.createdOn?.toISOString() : "Socket is null"}</p>
+      <ConnectionState isConnected={socket ? socket.isConnected : null} />
+      <Events events={socket ? [JSON.stringify(socket.lastReceived)] : []} />
+      <p>{socket ? socket.createdOn?.toISOString() : "Socket is null"}</p>
       {/* <ConnectionManager /> */}
     </div>)
 }
@@ -46,6 +46,6 @@ export const SocketConnection: React.FC = () => {
 const Events = (props: { events: unknown[] }) => {
   return <p>{props.events.join(", ")}</p>
 }
-const ConnectionState = (props: { isConnected: boolean|null }) => {
-  return <p>{props.isConnected ? "IS connected" : props.isConnected === false? "is not connected" : "Was null"}</p>
+const ConnectionState = (props: { isConnected: boolean | null }) => {
+  return <p>{props.isConnected ? "IS connected" : props.isConnected === false ? "is not connected" : "Was null"}</p>
 }
