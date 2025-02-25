@@ -5,18 +5,15 @@ import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
 import { SocketProvider } from './supporting/web-socket/web-socket.context';
-import { WebsocketProvider2 } from './supporting/socket.context';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <WebsocketProvider2>
     <SocketProvider>
       <App />
     </SocketProvider>
-    </WebsocketProvider2>
   </React.StrictMode>
 );
 
