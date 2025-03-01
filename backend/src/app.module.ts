@@ -4,6 +4,7 @@ import { join } from 'path';
 import { AppController } from './app.controller';
 import { MonitoringModule } from './support/monitoring/monitoring.module';
 import { GameRoomModule } from './core/game-room/game-room.module';
+import { AuthenticationModule } from './support/authentication/authentication.module';
 
 @Module({
   imports: [
@@ -16,7 +17,8 @@ import { GameRoomModule } from './core/game-room/game-room.module';
     
     }),
     MonitoringModule,
-    GameRoomModule
+    GameRoomModule,
+    AuthenticationModule,
   ],
   controllers: [AppController],
 })
