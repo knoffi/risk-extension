@@ -17,7 +17,7 @@ export class ConfigService implements ReadConfig {
         return this.getOrThrow('ENV_NAME');
     }
     createJwtOptions(): Promise<JwtModuleOptions> | JwtModuleOptions {
-        return {};
+        return {secret:this.getOrThrow("AUTH_SECRET")};
     }
 
     getOrThrow(envKey:ProcessKey):string|never{

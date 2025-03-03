@@ -1,19 +1,25 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post, BadRequestException } from '@nestjs/common';
+import { BadRequestException, Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { AuthenticationService } from './authentication.service';
 
 @Controller('authentication')
 export class AuthenticationController {
-    constructor(private authService: AuthenticationService) { }
+    constructor(private authService: AuthenticationService, private jwtService: JwtService) { }
 
     @HttpCode(HttpStatus.OK)
     @Post('login')
-    signIn(@Body() loginDto: unknown) {
+    async signIn(@Body() loginDto: unknown) {
         // TODO: replace typeguard with nestjs guard
         if(!isLoginDto(loginDto)){
             throw new BadRequestException(JSON.stringify(Object.keys(loginDto)))
         }
 
-        return this.authService.login(loginDto.username, loginDto.password);
+        const payload = this.authService.login(loginDto.username, loginDto.password);
+        const jwt = await this.jwtService.signAsync(payload);
+
+    return {
+      access_token: jwt,
+    };
     }
 }
 
