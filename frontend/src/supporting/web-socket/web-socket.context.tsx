@@ -36,20 +36,22 @@ export const SocketProvider = (props: { children: ReactNode[] | ReactNode }) => 
 
     useEffect(() => {
         const url = defaultConfigService.getSocketUrl();
-        const wsSocket = io(url);
+        const wsSocket = io(url,
+            { auth: { token: "123" } }
+        );
 
         wsSocket.on("connect", () => {
             setIsReady(true);
         })
-        wsSocket.on("connect_error", () => {
+        wsSocket.on("connect_error", (error) => {
             // TODO: Implement Error Toast and/or Loading Spinner
-            console.error("Connect error!")
             setIsReady(false);
+            throw error;
         })
-        wsSocket.on("disconnect", () => {
+        wsSocket.on("disconnect", (reason) => {
             // TODO: Implement Error Toast and/or Loading Spinner
-            console.error("Disconnected!")
             setIsReady(false);
+            throw new Error("Socket disconnected:" + reason)
         })
 
         ws.current = wsSocket
