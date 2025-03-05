@@ -9,6 +9,7 @@ import { ConfigService } from '../config/config.service';
 @Module({
   controllers: [AuthenticationController],
   providers: [AuthenticationService],
-  imports:[UserModule, JwtModule.registerAsync({imports:[ConfigModule],useExisting:ConfigService})]
+  imports: [UserModule, ConfigModule, JwtModule.registerAsync({ imports: [ConfigModule], useExisting: ConfigService })],
+  exports:[AuthenticationService]
 })
-export class AuthenticationModule {}
+export class AuthenticationModule { }
