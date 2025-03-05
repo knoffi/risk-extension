@@ -15,7 +15,7 @@ export const AuthProvider = (props: { children: React.ReactNode[] | React.ReactN
             }
         })
             .then(res => res.json())
-            .then((body) => setToken(body["access_token"]))
+            .then((body) => setToken(body["token"])) // TODO: Use shared type here
             .catch(error => console.error("Error during auth fetch!"))
     }, [])
 
