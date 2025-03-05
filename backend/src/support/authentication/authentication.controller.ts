@@ -15,7 +15,7 @@ export class AuthenticationController {
         }
 
         const payload = this.authService.login(loginDto.username, loginDto.password);
-        const jwt = await this.jwtService.signAsync(payload);
+        const jwt = await this.jwtService.signAsync(payload,{expiresIn:"2 days"});
 
     return {
       access_token: jwt,
