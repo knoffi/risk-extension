@@ -37,11 +37,12 @@ export const SocketProvider = (props: { children: ReactNode[] | ReactNode }) => 
     useEffect(() => {
         const url = defaultConfigService.getSocketUrl();
         const wsSocket = io(url,
-            { auth: { token: "123" } }
+            { auth: { token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI0NTYiLCJ1c2VybmFtZSI6IlBsYXllcjEiLCJyb2xlSWQiOiJwbGF5ZXIiLCJpYXQiOjE3NDExOTU0MjMsImV4cCI6MTc0MTM2ODIyM30.ZD3vZDm9rhjh0uDZpJ7xPRaZ9FhSFlK8-f1OzU5Dez4" } }
         );
 
         wsSocket.on("connect", () => {
             setIsReady(true);
+            console.log("I am socket " + wsSocket.id)
         })
         wsSocket.on("connect_error", (error) => {
             // TODO: Implement Error Toast and/or Loading Spinner
