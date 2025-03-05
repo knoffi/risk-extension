@@ -20,7 +20,6 @@ export class AuthenticationService {
                     secret: this.configService.getAuthSecret()
                 }
             );
-            console.log(JSON.stringify(foo))
             return true;
         } catch {
             return false;
