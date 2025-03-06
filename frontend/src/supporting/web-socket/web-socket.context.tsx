@@ -1,7 +1,8 @@
-import { createContext, ReactNode, useEffect, useRef, useState } from "react";
+import { createContext, ReactNode, useContext, useEffect, useRef, useState } from "react";
 import { io } from "socket.io-client";
 import { defaultConfigService } from "../config/config.service";
 import { FromServer, ToServer } from "@shared/socket/events";
+import { AuthContext } from "../auth.context";
 
 
 type SocketIO = ReturnType<typeof io>;
@@ -30,14 +31,20 @@ export const SocketContext = createContext<Socket | null>(null);
 export const SocketProvider = (props: { children: ReactNode[] | ReactNode }) => {
 
     const [isReady, setIsReady] = useState<boolean>(false)
+    const {token} = useContext(AuthContext);
 
     const ws = useRef<null | SocketIO>(null)
 
 
     useEffect(() => {
+            console.log("I ran with token:" + token)
+        if(!token){
+            return;
+        }
+
         const url = defaultConfigService.getSocketUrl();
         const wsSocket = io(url,
-            { auth: { token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI0NTYiLCJ1c2VybmFtZSI6IlBsYXllcjEiLCJyb2xlSWQiOiJwbGF5ZXIiLCJpYXQiOjE3NDExOTU0MjMsImV4cCI6MTc0MTM2ODIyM30.ZD3vZDm9rhjh0uDZpJ7xPRaZ9FhSFlK8-f1OzU5Dez4" } }
+            { auth: { token} }
         );
 
         wsSocket.on("connect", () => {
@@ -58,7 +65,7 @@ export const SocketProvider = (props: { children: ReactNode[] | ReactNode }) => 
         ws.current = wsSocket
 
         return () => void wsSocket.disconnect();
-    }, [])
+    }, [token])
 
     const throwSocketUnreadyError = () => { throw new Error("Socket not ready") }
 
