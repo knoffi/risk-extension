@@ -19,7 +19,7 @@ export class AuthenticationService {
 
     public async verifyToken(jwt: string): Promise<boolean> | never {
         try {
-            const foo = await this.jwtService.verifyAsync(
+            await this.jwtService.verifyAsync(
                 jwt,
                 {
                     secret: this.configService.getAuthSecret()
