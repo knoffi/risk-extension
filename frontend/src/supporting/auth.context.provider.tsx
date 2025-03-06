@@ -11,8 +11,13 @@ export const AuthProvider = (props: { children: React.ReactNode[] | React.ReactN
             'Content-Type': 'application/json'
         }
     })
-        .then(res => res.json())
-        .then((body) => setToken(body["token"])) // TODO: Use shared type here
+        .then(res => {
+            if (res.status >= 400) throw new Error(`Login failed with status ${res.status}`)
+            return res.json()
+        })
+        .then((body) => {
+            setToken(body["token"])
+        })
 
     const authService: AuthService = { token, login }
     return <AuthContext.Provider value={authService}>{props.children}</AuthContext.Provider>

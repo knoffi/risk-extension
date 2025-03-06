@@ -3,8 +3,8 @@ import { Link } from "react-router"
 import { AuthContext } from "../auth.context";
 export const LoginPage: React.FC=()=>{
 
-    const [username,setUsername] = useState("Player1");
-    const [password,setPassword] = useState("player1");
+    const [username,setUsername] = useState("");
+    const [password,setPassword] = useState("");
 
     const {login,token} = useContext(AuthContext);
 
