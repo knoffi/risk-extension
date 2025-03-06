@@ -12,7 +12,7 @@ export const AuthProvider = (props: { children: React.ReactNode[] | React.ReactN
         }
     })
         .then(res => {
-            if (res.status >= 400) throw new Error(`Login failed with status ${res.status}`)
+            if (res.status >= 400) throw new Error(`Log in failed with status ${res.status}`)
             return res.json()
         })
         .then((body) => {
