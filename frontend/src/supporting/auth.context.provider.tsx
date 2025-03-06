@@ -1,24 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { AuthContext, AuthService } from "./auth.context";
 
 export const AuthProvider = (props: { children: React.ReactNode[] | React.ReactNode }) => {
     const [token, setToken] = useState<null | string>(null)
 
-    const body = JSON.stringify({ username: "Player1", password: "player1" })
+    const login = (username: string, password: string) => fetch("http://localhost:3001/api/authentication/login", {
+        method: "POST",
+        body: JSON.stringify({ username, password }),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(res => res.json())
+        .then((body) => setToken(body["token"])) // TODO: Use shared type here
 
-    useEffect(() => {
-        fetch("http://localhost:3001/api/authentication/login", {
-            method: "POST",
-            body,
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-            .then(res => res.json())
-            .then((body) => setToken(body["token"])) // TODO: Use shared type here
-            .catch(error => console.error("Error during auth fetch!"))
-    }, [])
-
-    const authService: AuthService = { token, login: () => undefined }
+    const authService: AuthService = { token, login }
     return <AuthContext.Provider value={authService}>{props.children}</AuthContext.Provider>
 }

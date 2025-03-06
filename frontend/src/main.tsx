@@ -5,25 +5,26 @@ import * as serviceWorkerRegistration from './service-worker-registration';
 import { BrowserRouter, Route, Routes } from "react-router"
 import { LoginPage } from './supporting/login/login.page';
 import { HeaderComponent } from './supporting/navigation/header.component';
+import { AuthProvider } from './supporting/auth.context.provider';
+import { SocketProvider } from './supporting/web-socket/web-socket.context';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<HeaderComponent />}>
-          <Route path="home" element={<App />} />
-          <Route path="login" element={<LoginPage/>}/>
-        </Route>
-      </Routes>
-    </BrowserRouter>
-    {/* <AuthProvider>
+    <AuthProvider>
       <SocketProvider>
-        <App />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<HeaderComponent />}>
+              <Route path="home" element={<App />} />
+              <Route path="login" element={<LoginPage />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
       </SocketProvider>
-    </AuthProvider> */}
+    </AuthProvider>
   </React.StrictMode>
 );
 
