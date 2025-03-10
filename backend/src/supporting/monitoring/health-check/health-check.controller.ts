@@ -1,5 +1,5 @@
 import { Controller, Get, Inject } from '@nestjs/common';
-import { ConfigService, ReadConfig, ReadEnvConfig } from 'src/support/config/config.service';
+import { ConfigService, ReadEnvConfig } from 'src/supporting/config/config.service';
 
 @Controller()
 export class HealthCheckController {
@@ -7,6 +7,6 @@ export class HealthCheckController {
 
   @Get("/health-check")
   getHealtcheck() {
-    return { env: this.config.getEnvInfo()};
+    return { env: this.config.getEnvInfo() };
   }
 }

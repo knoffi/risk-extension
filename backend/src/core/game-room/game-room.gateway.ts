@@ -3,14 +3,13 @@ import {
   MessageBody,
   SubscribeMessage,
   WebSocketGateway,
-  WebSocketServer,
-  WsException
+  WebSocketServer
 } from '@nestjs/websockets';
 import { ToClient } from '@shared/socket/events';
 import { MESSAGE_TO_CLIENT_EVENT } from '@shared/socket/to-client/message.dto';
 import { MESSAGE_FROM_CLIENT_EVENT, MessageFromClient } from '@shared/socket/to-server/message.dto';
 import { Server, Socket } from 'socket.io';
-import { AuthenticationService } from 'src/support/authentication/authentication.service';
+import { AuthenticationService } from 'src/supporting/authentication/authentication.service';
 
 @WebSocketGateway({
   cors: {
@@ -27,7 +26,6 @@ export class GameRoomGateway {
   async handleConnection(socket: Socket) {
     const { token } = socket.handshake.auth;
     if (!token || typeof token != "string") {
-
       socket._error({ message: "Missing auth token or auth token is no string" })
 
       socket.disconnect(true);
@@ -40,7 +38,6 @@ export class GameRoomGateway {
       socket._error({ message: "Auth token found, but was invalid" })
 
       socket.disconnect(true);
-      //foo
       console.error(`Closed ${socket.id} due to invalid auth token`)
       return
     }

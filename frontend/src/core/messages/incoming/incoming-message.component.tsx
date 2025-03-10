@@ -1,11 +1,12 @@
-import React, { useContext, useEffect, useState } from "react";
-import { SocketContext } from "../../../supporting/web-socket/web-socket.context";
 import { MessageFromServer } from "@shared/socket/to-client/message.dto";
+import { SocketContext } from "@src/supporting/socket/socket.context";
+import React, { useContext, useEffect, useState } from "react";
 
 export const IncomingMessage: React.FC = () => {
 
   const [received, setReceived] = useState<MessageFromServer | null>(null);
   const socket = useContext(SocketContext)
+
   useEffect(() => {
     socket?.on("response_message", (payload) => {
       setReceived(payload)

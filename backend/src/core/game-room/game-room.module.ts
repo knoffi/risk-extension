@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
+import { AuthenticationModule } from 'src/supporting/authentication/authentication.module';
 import { GameRoomGateway } from './game-room.gateway';
-import { AuthenticationModule } from 'src/support/authentication/authentication.module';
 
 @Module({
   providers: [GameRoomGateway],
-  imports:[AuthenticationModule]
+  imports: [AuthenticationModule]
 })
-export class GameRoomModule {}
+export class GameRoomModule { }

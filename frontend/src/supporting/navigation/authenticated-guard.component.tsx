@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { Navigate, Outlet } from "react-router";
-import { AuthContext } from "../auth.context";
+import { AuthContext } from "../authenticated/auth.context";
 
 export const AuthenticatedGuard = () => {
     const { token } = useContext(AuthContext)

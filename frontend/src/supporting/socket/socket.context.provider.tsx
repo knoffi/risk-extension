@@ -1,50 +1,27 @@
-import { createContext, ReactNode, useContext, useEffect, useRef, useState } from "react";
+import { ReactNode, useContext, useEffect, useRef, useState } from "react";
 import { io } from "socket.io-client";
+import { AuthContext } from "../authenticated/auth.context";
 import { defaultConfigService } from "../config/config.service";
-import { FromServer, ToServer } from "@shared/socket/events";
-import { AuthContext } from "../auth.context";
+import { SocketContext, SocketIO, SocketService } from "./socket.context";
 
-
-type SocketIO = ReturnType<typeof io>;
-type LifecycleEvent = "connect" | "connect_error" | "disconnect";
-type LifecycleListener = () => ReturnType<SocketIO["on"]>;
-type OnLifecycle = (event: LifecycleEvent, listener: LifecycleListener) => void;
-type Listener<T extends FromServer> = (payload: T["payload"]) => void
-type OnCustom<T extends FromServer> = T["event"] extends LifecycleEvent ? never : (event: T["event"], listener: Listener<T>) => void
-
-interface Socket {
-    // Workaround for bad framework typing
-    on: OnCustom<FromServer>;
-    // Workaround for bad framework typing
-    onLifecycle: OnLifecycle;
-    isConnected: boolean;
-    createdOn: Date | null;
-    /**
-     * id exists iff socket in connected
-     */
-    id?: string,
-    emit: <T extends ToServer>(event: T["event"], payload: T["payload"]) => void,
-}
-
-export const SocketContext = createContext<Socket | null>(null);
 
 export const SocketProvider = (props: { children: ReactNode[] | ReactNode }) => {
 
     const [isReady, setIsReady] = useState<boolean>(false)
-    const {token} = useContext(AuthContext);
+    const { token } = useContext(AuthContext);
 
     const ws = useRef<null | SocketIO>(null)
 
 
     useEffect(() => {
-            console.log("I ran with token:" + token)
-        if(!token){
+        console.log("I ran with token:" + token)
+        if (!token) {
             return;
         }
 
         const url = defaultConfigService.getSocketUrl();
         const wsSocket = io(url,
-            { auth: { token} }
+            { auth: { token } }
         );
 
         wsSocket.on("connect", () => {
@@ -69,7 +46,7 @@ export const SocketProvider = (props: { children: ReactNode[] | ReactNode }) => 
 
     const throwSocketUnreadyError = () => { throw new Error("Socket not ready") }
 
-    const socketClient: Socket = {
+    const socketClient: SocketService = {
         createdOn: new Date(), emit: ws.current?.emit.bind(ws.current) ?? throwSocketUnreadyError, isConnected: isReady, on: ws.current?.on.bind(ws.current) ?? throwSocketUnreadyError, onLifecycle: ws.current?.on.bind(ws.current) ?? throwSocketUnreadyError
     }
 

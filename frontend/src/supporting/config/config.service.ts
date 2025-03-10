@@ -2,13 +2,13 @@
 type ImportMetaEnvKey = keyof ImportMeta["env"]
 
 class ConfigService {
-    getSocketUrl(): string| undefined {
+    getSocketUrl(): string | undefined {
 
-        // "undefined" means the URL will be computed from the `window.location` object by socket.io-client
+        // TODO: Is this still true: "undefined" means the URL will be computed from the `window.location` object by socket.io-client
         return this.getEnvVarOrThrow("PROD") === true ? undefined : 'http://localhost:3001'
     }
 
-    getNumberOfTurtles(): string|undefined {
+    getNumberOfTurtles(): string | undefined {
         return this.getEnvVarOrThrow("VITE_NUMBER_OF_TURTLES")
     }
 
