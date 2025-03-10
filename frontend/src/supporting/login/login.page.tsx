@@ -27,14 +27,14 @@ export const LoginPage: React.FC = () => {
 
     return <div>
         <h1>
-            Loginos Page
+            Login
         </h1>
         <div style={{ flexDirection: "column", display: "flex", gap: 10, maxWidth: "25%" }}>
             <input type="text" title="Username" value={username} onChange={(e) => setUsername(e.target.value)}></input>
             <input type="text" title="Password" value={password} onChange={(e) => setPassword(e.target.value)}></input>
             {/* <button type="submit">Login</button> */}
         </div>
-        <button onClick={onSubmit}>Submit hier</button>
+        <button onClick={onSubmit}>Submit</button>
         <p>Token: {token}</p>
 
         <p><Link to={"/home"} >Go To Home</Link></p>
