@@ -1,16 +1,22 @@
-type EnvVariable = "NODE_ENV"
+
+type ImportMetaEnvKey = keyof ImportMeta["env"]
 
 class ConfigService {
-    getSocketUrl(): string| undefined {
+    getSocketUrl(): string | undefined {
 
-        // "undefined" means the URL will be computed from the `window.location` object
-        return this.getEnvOrThrow("NODE_ENV") === 'production' ? undefined : 'http://localhost:3001'
+        // TODO: Is this still true: "undefined" means the URL will be computed from the `window.location` object by socket.io-client
+        return this.getEnvVarOrThrow("PROD") === true ? undefined : 'http://localhost:3001'
     }
 
-    private getEnvOrThrow(variable: EnvVariable): string | never {
-        const value = process.env[variable]
+    getNumberOfTurtles(): string | undefined {
+        return this.getEnvVarOrThrow("VITE_NUMBER_OF_TURTLES")
+    }
 
-        if (typeof value != "string") throw new Error("No value variable " + variable);
+
+    private getEnvVarOrThrow<T extends ImportMetaEnvKey>(property: T): ImportMeta["env"][T] | never {
+        const value = import.meta.env[property];
+
+        if (value == undefined) throw new Error("No value for import.meta property: " + property);
 
         return value;
     }
