@@ -5,6 +5,7 @@ import reactRefresh from "eslint-plugin-react-refresh";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 
+// TODO: use explicit rules and embrace eslint-rule-ownership (maybe even look up eslintPluginPrettierRecommended-object from node_module)
 export default tseslint.config(
     { ignores: ["dist", "eslint.config.js"] },
 
