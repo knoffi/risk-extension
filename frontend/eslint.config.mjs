@@ -1,4 +1,5 @@
 import eslint from "@eslint/js";
+import eslintPluginForImportsInTypescript from "eslint-plugin-import-typescript";
 import eslintPluginPrettierRecommended from "eslint-plugin-prettier/recommended";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
@@ -17,7 +18,14 @@ export default tseslint.config(
             "prettier/prettier": "warn",
         },
     },
-
+    {
+        plugins: {
+            "import-typescript": eslintPluginForImportsInTypescript,
+        },
+        rules: {
+            "import-typescript/no-relative-parent-imports": ["error"],
+        },
+    },
     {
         extends: [eslint.configs.recommended, ...tseslint.configs.recommended],
         files: ["**/*.{ts,tsx}"],

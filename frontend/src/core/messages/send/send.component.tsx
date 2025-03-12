@@ -1,6 +1,6 @@
 import { MESSAGE_TO_SERVER_EVENT } from "@shared/socket/to-server/message.dto";
 import { useContext, useRef, useState } from "react";
-import { SocketContext } from "../../../supporting/socket/socket.context";
+import { SocketContext } from "src/supporting/socket/socket.context";
 
 export function SendMessage() {
     const [msg, setMsg] = useState("");

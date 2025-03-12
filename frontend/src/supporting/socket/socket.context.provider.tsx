@@ -1,7 +1,7 @@
 import { ReactNode, useContext, useEffect, useRef, useState } from "react";
 import { io } from "socket.io-client";
-import { AuthContext } from "../authenticated/auth.context";
-import { defaultConfigService } from "../config/config.service";
+import { AuthContext } from "src/supporting/authenticated/auth.context";
+import { defaultConfigService } from "src/supporting/config/config.service";
 import { SocketContext, SocketIO, SocketService } from "./socket.context";
 
 export const SocketProvider = (props: {

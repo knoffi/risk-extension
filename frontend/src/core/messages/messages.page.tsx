@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import { AuthContext } from "../../supporting/authenticated/auth.context";
-import { defaultConfigService } from "../../supporting/config/config.service";
+import { AuthContext } from "src/supporting/authenticated/auth.context";
+import { defaultConfigService } from "src/supporting/config/config.service";
 import { IncomingMessage } from "./incoming/incoming-message.component";
 import { SendMessage } from "./send/send.component";
 

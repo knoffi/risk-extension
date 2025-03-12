@@ -1,6 +1,6 @@
 import { useCallback, useContext, useState } from "react";
 import { Link, useNavigate } from "react-router";
-import { AuthContext } from "../authenticated/auth.context";
+import { AuthContext } from "src/supporting/authenticated/auth.context";
 export const LoginPage: React.FC = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
