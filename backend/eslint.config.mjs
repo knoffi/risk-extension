@@ -1,5 +1,6 @@
 // @ts-check
 import eslint from "@eslint/js";
+import eslintPluginForImportsInTypescript from "eslint-plugin-import-typescript";
 import eslintPluginPrettierRecommended from "eslint-plugin-prettier/recommended";
 import globals from "globals";
 import tseslint from "typescript-eslint";
@@ -32,6 +33,14 @@ export default tseslint.config(
                     projectService: true,
                     tsconfigRootDir: import.meta.dirname,
                },
+          },
+     },
+     {
+          plugins: {
+               "import-typescript": eslintPluginForImportsInTypescript,
+          },
+          rules: {
+               "import-typescript/no-relative-parent-imports": ["error"],
           },
      },
      {

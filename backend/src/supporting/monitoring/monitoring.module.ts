@@ -2,7 +2,7 @@ import { Module } from "@nestjs/common";
 import { ServeStaticModule } from "@nestjs/serve-static";
 import { join } from "path";
 import { HealthCheckController } from "./health-check/health-check.controller";
-import { ConfigModule } from "../config/config.module";
+import { ConfigModule } from "src/supporting/config/config.module";
 
 @Module({
      imports: [
