@@ -5,16 +5,16 @@ import { HealthCheckController } from "./health-check/health-check.controller";
 import { ConfigModule } from "../config/config.module";
 
 @Module({
-  imports: [
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, "..", "build"),
-      exclude: ["/api/{*test}"],
-      serveStaticOptions: {
-        fallthrough: false,
-      },
-    }),
-    ConfigModule,
-  ],
-  controllers: [HealthCheckController],
+     imports: [
+          ServeStaticModule.forRoot({
+               rootPath: join(__dirname, "..", "build"),
+               exclude: ["/api/{*test}"],
+               serveStaticOptions: {
+                    fallthrough: false,
+               },
+          }),
+          ConfigModule,
+     ],
+     controllers: [HealthCheckController],
 })
 export class MonitoringModule {}

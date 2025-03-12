@@ -7,16 +7,16 @@ import { AuthenticationController } from "./authentication.controller";
 import { AuthenticationService } from "./authentication.service";
 
 @Module({
-  controllers: [AuthenticationController],
-  providers: [AuthenticationService],
-  imports: [
-    UserModule,
-    ConfigModule,
-    JwtModule.registerAsync({
-      imports: [ConfigModule],
-      useExisting: ConfigService,
-    }),
-  ],
-  exports: [AuthenticationService],
+     controllers: [AuthenticationController],
+     providers: [AuthenticationService],
+     imports: [
+          UserModule,
+          ConfigModule,
+          JwtModule.registerAsync({
+               imports: [ConfigModule],
+               useExisting: ConfigService,
+          }),
+     ],
+     exports: [AuthenticationService],
 })
 export class AuthenticationModule {}

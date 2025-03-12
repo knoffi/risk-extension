@@ -3,7 +3,7 @@ import { AuthenticationModule } from "src/supporting/authentication/authenticati
 import { GameRoomGateway } from "./game-room.gateway";
 
 @Module({
-  providers: [GameRoomGateway],
-  imports: [AuthenticationModule],
+     providers: [GameRoomGateway],
+     imports: [AuthenticationModule],
 })
 export class GameRoomModule {}

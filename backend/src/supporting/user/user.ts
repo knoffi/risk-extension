@@ -2,9 +2,9 @@
 type Role = "Game master" | "player";
 
 export interface User {
-  userId: string;
-  username: string;
-  // TODO: Should be hashed, needs salt & pepper
-  password: string;
-  roleId: Role;
+     userId: string;
+     username: string;
+     // TODO: Should be hashed, needs salt & pepper
+     password: string;
+     roleId: Role;
 }

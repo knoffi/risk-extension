@@ -8,31 +8,31 @@ export type ReadEnvConfig = { getEnvInfo(): string };
 type EnvKey = "ENV_NAME";
 
 export type ReadAuthConfig = JwtOptionsFactory & {
-  getAuthSecret: () => string;
+     getAuthSecret: () => string;
 };
 
 type AuthKey = "AUTH_SECRET";
 
 @Injectable()
 export class ConfigService implements ReadConfig {
-  getAuthSecret(): string {
-    return this.getOrThrow("AUTH_SECRET");
-  }
-  getEnvInfo(): string {
-    return this.getOrThrow("ENV_NAME");
-  }
+     getAuthSecret(): string {
+          return this.getOrThrow("AUTH_SECRET");
+     }
+     getEnvInfo(): string {
+          return this.getOrThrow("ENV_NAME");
+     }
 
-  createJwtOptions(): Promise<JwtModuleOptions> | JwtModuleOptions {
-    return { secret: this.getOrThrow("AUTH_SECRET") };
-  }
+     createJwtOptions(): Promise<JwtModuleOptions> | JwtModuleOptions {
+          return { secret: this.getOrThrow("AUTH_SECRET") };
+     }
 
-  private getOrThrow(envKey: ProcessKey): string | never {
-    const envValue = process.env[envKey];
+     private getOrThrow(envKey: ProcessKey): string | never {
+          const envValue = process.env[envKey];
 
-    if (!envValue) {
-      throw new Error("Not found: " + envKey);
-    }
+          if (!envValue) {
+               throw new Error("Not found: " + envKey);
+          }
 
-    return envValue;
-  }
+          return envValue;
+     }
 }
