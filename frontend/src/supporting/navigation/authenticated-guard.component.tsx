@@ -3,9 +3,9 @@ import { Navigate, Outlet } from "react-router";
 import { AuthContext } from "../authenticated/auth.context";
 
 export const AuthenticatedGuard = () => {
-    const { token } = useContext(AuthContext)
+    const { token } = useContext(AuthContext);
 
-    if (!token) return <Navigate to={"login"} />
+    if (!token) return <Navigate to={"login"} />;
 
-    return <Outlet />
-}
+    return <Outlet />;
+};

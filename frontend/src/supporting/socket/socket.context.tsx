@@ -6,8 +6,10 @@ export type SocketIO = ReturnType<typeof io>;
 type LifecycleEvent = "connect" | "connect_error" | "disconnect";
 type LifecycleListener = () => ReturnType<SocketIO["on"]>;
 type OnLifecycle = (event: LifecycleEvent, listener: LifecycleListener) => void;
-type Listener<T extends FromServer> = (payload: T["payload"]) => void
-type OnCustom<T extends FromServer> = T["event"] extends LifecycleEvent ? never : (event: T["event"], listener: Listener<T>) => void
+type Listener<T extends FromServer> = (payload: T["payload"]) => void;
+type OnCustom<T extends FromServer> = T["event"] extends LifecycleEvent
+    ? never
+    : (event: T["event"], listener: Listener<T>) => void;
 
 export interface SocketService {
     // Workaround for bad framework typing
@@ -19,8 +21,11 @@ export interface SocketService {
     /**
      * id exists iff socket in connected
      */
-    id?: string,
-    emit: <T extends ToServer>(event: T["event"], payload: T["payload"]) => void,
+    id?: string;
+    emit: <T extends ToServer>(
+        event: T["event"],
+        payload: T["payload"]
+    ) => void;
 }
 
 export const SocketContext = createContext<SocketService | null>(null);
