@@ -1,14 +1,14 @@
 export interface LoginRequestDto {
-    username: string,
-    password: string
+     username: string;
+     password: string;
 }
 
-export type LoginResponseDto = LoginSuccessResponseDto | LoginFailResponseDto
+export type LoginResponseDto = LoginSuccessResponseDto | LoginFailResponseDto;
 
 export interface LoginSuccessResponseDto {
-    token: string
+     token: string;
 }
 
-export type LoginFailResponseDto = { message: "Unauthorized", statusCode: 401 } | {message: string,
-    error: "Bad Request",
-    statusCode: 400}
+export type LoginFailResponseDto =
+     | { message: "Unauthorized"; statusCode: 401 }
+     | { message: string; error: "Bad Request"; statusCode: 400 };
