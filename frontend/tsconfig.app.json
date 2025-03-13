@@ -7,9 +7,7 @@
         "lib": ["ES2020", "DOM", "DOM.Iterable"],
         "module": "ESNext",
         "paths": {
-            "@shared/*": ["../shared/*"],
-            "@src/supporting/*": ["./src/supporting/*"],
-            "@src/core/*": ["./src/core/*"]
+            "@shared/*": ["../shared/*"]
         },
         "skipLibCheck": true,
         /* Bundler mode */
