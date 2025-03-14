@@ -1,8 +1,11 @@
-console.log("Hey, I am a service worker.");
+const cacheName = "v0.3";
 
 const addResourcesToCache = async (resources) => {
-    const cache = await caches.open("v1");
+    const cache = await caches.open(cacheName);
     await cache.addAll(resources);
+
+    console.log("#### CACHE ####");
+    console.log(await cache.keys().length);
 };
 
 self.addEventListener("install", (event) => {
@@ -14,15 +17,31 @@ self.addEventListener("install", (event) => {
             "/style.css",
             "/app.js",
             "/image-list.js",
-            "/star-wars-logo.jpg",
-            "/gallery/bountyHunters.jpg",
-            "/gallery/myLittleVader.jpg",
-            "/gallery/snowTroopers.jpg",
         ])
     );
 });
 
+self.addEventListener("activate", (event) => {
+    console.log("SW active");
+
+    self.clients.claim();
+});
+
 self.addEventListener("fetch", (event) => {
-    // event.respondWith(/* custom content goes here */);
-    console.log("SW got fetch event:" + JSON.stringify(event));
+    console.log(`SW fetching: ${event.request.url}`);
+
+    event.respondWith(
+        (async () => {
+            const responseFromCache = await caches.match(event.request);
+            if (responseFromCache) {
+                return responseFromCache;
+            }
+
+            const response = await fetch(event.request);
+            const cache = await caches.open(cacheName);
+            console.log(`SW caching new resource: ${event.request.url}`);
+            cache.put(event.request, response.clone());
+            return response;
+        })()
+    );
 });
