@@ -50,6 +50,9 @@ export const LoginPage: React.FC = () => {
             <p>
                 <Link to={"/home"}>Go To Home</Link>
             </p>
+            <p>
+                <Link to={"/acknowledgements"}>Acknowledgements</Link>
+            </p>
         </div>
     );
 };
