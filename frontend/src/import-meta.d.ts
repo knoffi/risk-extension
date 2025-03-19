@@ -1,6 +1,6 @@
 interface ImportMeta {
     env: {
-        PROD: boolean;
+        MODE: "PROD" | "STG" | "LOCAL" | "LOCAL_PREVIEW";
         VITE_NUMBER_OF_TURTLES: string;
     };
 }

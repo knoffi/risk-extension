@@ -1,11 +1,26 @@
 type ImportMetaEnvKey = keyof ImportMeta["env"];
+type ENV = ImportMeta["env"]["MODE"];
 
 class ConfigService {
     getSocketUrl(): string | undefined {
-        // TODO: Is this still true: "undefined" means the URL will be computed from the `window.location` object by socket.io-client
-        return this.getEnvVarOrThrow("PROD") === true
-            ? undefined
-            : "http://localhost:3001";
+        const env = this.getEnvVarOrThrow("MODE");
+        switch (env) {
+            case "PROD":
+            case "STG":
+                // "undefined" means the URL will be computed from the `window.location.origin` object by socket.io-client
+                // (socket.io-client assumes as default behaviour that the source of the frontend is the same server that handles the socket communication)
+                return undefined;
+
+            case "LOCAL":
+            case "LOCAL_PREVIEW":
+                return "http://localhost:3001";
+            default:
+                throw new Error("Unknown socket origin for MODE:" + env);
+        }
+    }
+
+    getEnvironment(): ENV {
+        return this.getEnvVarOrThrow("MODE");
     }
 
     getNumberOfTurtles(): string | undefined {
