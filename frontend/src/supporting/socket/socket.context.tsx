@@ -1,4 +1,4 @@
-import { FromServer, ToServer } from "@shared/socket/events";
+import { FromServer, ToServer } from "@shared/src/core/game-room/socket/events";
 import { createContext } from "react";
 import { io } from "socket.io-client";
 

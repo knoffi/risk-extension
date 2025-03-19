@@ -1,4 +1,4 @@
-import { MessageFromServer } from "@shared/socket/to-client/message.dto";
+import { MessageFromServer } from "@shared/src/core/game-room/socket/to-client/message.dto";
 import React, { useContext, useEffect, useState } from "react";
 import { SocketContext } from "src/supporting/socket/socket.context";
 
