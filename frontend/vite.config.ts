@@ -11,4 +11,12 @@ export default defineConfig({
             src: path.resolve(__dirname, "./src"),
         },
     },
+    build: {
+        rollupOptions: {
+            output: {
+                // NOTE: If you change this name or its directory, adjust precaching of service worker
+                entryFileNames: "bundle.js",
+            },
+        },
+    },
 });
