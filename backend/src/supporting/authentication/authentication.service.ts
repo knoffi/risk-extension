@@ -1,10 +1,10 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
+import { Flavor } from "@shared/src/util/flavor";
 import { ConfigService } from "src/supporting/config/config.service";
 import { ReadUserService, UserService } from "src/supporting/user/user.service";
 
-// TODO: Introduce Flavoured Type here
-type AccessToken = string;
+type AccessToken = Flavor<"access-token">;
 
 @Injectable()
 export class AuthenticationService {
