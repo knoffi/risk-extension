@@ -1,4 +1,5 @@
 import { NestFactory } from "@nestjs/core";
+import { BACKEND_PORT } from "@shared/src/ports";
 import { AppModule } from "src/app.module";
 
 // disable
@@ -14,7 +15,7 @@ async function bootstrap() {
           allowedHeaders: "Content-Type,Accept,Authorization",
      });
 
-     await app.listen(3001);
+     await app.listen(BACKEND_PORT);
      console.log(`Application is running on: ${await app.getUrl()}`);
 }
 void bootstrap();

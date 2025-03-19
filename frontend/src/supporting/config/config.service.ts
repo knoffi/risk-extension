@@ -1,3 +1,5 @@
+import { BACKEND_PORT } from "@shared/src/ports";
+
 type ImportMetaEnvKey = keyof ImportMeta["env"];
 type ENV = ImportMeta["env"]["MODE"];
 
@@ -14,6 +16,21 @@ class ConfigService {
             case "LOCAL":
             case "LOCAL_PREVIEW":
                 return "http://localhost:3001";
+            default:
+                throw new Error("Unknown socket origin for MODE:" + env);
+        }
+    }
+
+    getApiOrigin(): string {
+        const env = this.getEnvVarOrThrow("MODE");
+        switch (env) {
+            case "PROD":
+            case "STG":
+                throw new Error("Not implemented yet!");
+            case "LOCAL":
+            case "LOCAL_PREVIEW":
+                return "http://localhost:" + BACKEND_PORT;
+
             default:
                 throw new Error("Unknown socket origin for MODE:" + env);
         }
