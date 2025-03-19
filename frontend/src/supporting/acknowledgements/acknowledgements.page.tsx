@@ -43,7 +43,7 @@ export const AcknowledgementsPage = () => {
             </div>
             <br />
             <p>
-                <Link to={"/Login"}>Back to Login</Link>
+                <Link to={"/login"}>Back to Login</Link>
             </p>
         </div>
     );

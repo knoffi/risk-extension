@@ -53,6 +53,9 @@ export const LoginPage: React.FC = () => {
             <p>
                 <Link to={"/acknowledgements"}>Acknowledgements</Link>
             </p>
+            <p>
+                <Link to={"/game-history"}>See Previous Games</Link>
+            </p>
         </div>
     );
 };

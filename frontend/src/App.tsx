@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router";
+import { GameHistoryPage } from "src/core/game-history/game-history.page";
 import { AcknowledgementsPage } from "src/supporting/acknowledgements/acknowledgements.page";
 import { MessagesPage } from "./core/messages/messages.page";
 import { LoginPage } from "./supporting/login/login.page";
@@ -19,6 +20,7 @@ function App() {
                     path="/acknowledgements"
                     element={<AcknowledgementsPage />}
                 />
+                <Route path="/game-history" element={<GameHistoryPage />} />
             </Routes>
         </BrowserRouter>
     );
