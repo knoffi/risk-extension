@@ -8,12 +8,6 @@ const CACHE_NAME = "v0.17";
 
 // TODO: What happens, when a user logs in with a different profile. Will the service worker return cached results from the previous profile? This seems like a security risk, if two different people use the same device
 
-// event.request.destination == "script" (for bundle.js, config.service.ts, login.page.tsx, foo.context.tsx) , == "image" (for risk.svg, favico.ico) == undefined or == [a string != "" but with .length==0] for (health-check-get-request)
-// event.request.destination = "navigate" (on reaload for bundle.js)
-// event.request.destination = "manifest" (for manifest.json)
-// someone on the internet: == "style" (for ccs-files)
-// event.request.mode == "cors" (for GET against api/health-check, POST against /api/authentication/login [but could not be put into cache], *tsx, *.ts, bundle.js, manifest.json), == "no-cors" for (risk.svg, favico.ico),
-
 function isDevMode() {
     return self.location.origin.match(/^http:\/\/localhost:5173/);
 }
@@ -96,13 +90,16 @@ self.addEventListener("fetch", async (event) => {
                 const cache = await caches.open(CACHE_NAME);
                 const cachedResponse = await cache.match(event.request.url);
                 if (cachedResponse) {
-                    console.debug("CF from cache :: " + event.request.url);
+                    console.debug(
+                        "CF from cache served :: " + event.request.url
+                    );
                     return cachedResponse;
                 }
 
                 const fetchedResponse = await fetch(event.request);
+                console.debug("CF from network served :: " + event.request.url);
                 await cache.put(event.request.url, fetchedResponse.clone());
-                console.debug("CF from network :: " + event.request.url);
+                console.debug("CF from network cached :: " + event.request.url);
                 return fetchedResponse.clone();
             })()
         );
@@ -114,21 +111,29 @@ self.addEventListener("fetch", async (event) => {
         );
         return event.respondWith(
             (async () => {
+                const cache = await caches.open(CACHE_NAME);
                 try {
                     const fetchedResponse = await fetch(event.request);
-                    console.debug("NF from network :: " + event.request.url);
+                    console.debug(
+                        "NF from network served :: " + event.request.url
+                    );
+                    await cache.put(event.request.url, fetchedResponse.clone());
+                    console.debug(
+                        "NF from network cached:: " + event.request.url
+                    );
                     return fetchedResponse;
                 } catch (e) {
-                    const cache = await caches.open(CACHE_NAME);
                     const cachedResponse = await cache.match(event.request.url);
                     if (cachedResponse) {
-                        console.debug("NF from cache :: " + event.request.url);
+                        console.debug(
+                            "NF from cache served :: " + event.request.url
+                        );
                         return cachedResponse;
                     }
 
-                    // Throw in response if fetch fails and nthere was no matching entry in cache (instead of resolving the fetch with undefined)
+                    // Throw in response if fetch fails and there was no matching entry in cache (instead of resolving the fetch with undefined)
                     throw new Error(
-                        "NF: Failed to get resource:" + event.request.url
+                        "NF: Failed to get resource :: " + event.request.url
                     );
                 }
             })()
