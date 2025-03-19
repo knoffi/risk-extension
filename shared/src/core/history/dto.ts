@@ -1,11 +1,11 @@
 import { FractionId } from "@shared/src/core/fraction/dto";
 import { PlayerId } from "@shared/src/core/player/dto";
 
-export interface GetPreviousGamesResponse {
+export interface GetHistoryResponse {
      games: FinishedGame[];
 }
 
-interface FinishedGame {
+export interface FinishedGame {
      startedAt: Date;
      endedAt: Date;
      winningFraction: FractionId;
