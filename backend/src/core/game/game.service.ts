@@ -1,5 +1,5 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { FinishedGame } from "@shared/src/core/history/dto";
+import { FinishedGame } from "@shared/src/core/game/dto";
 import { GameRepository, ReadGamesRepo } from "src/core/game/game.repository";
 
 export interface ReadGamesService {
