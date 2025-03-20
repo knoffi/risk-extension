@@ -1,4 +1,4 @@
-import { MESSAGE_TO_SERVER_EVENT } from "@shared/socket/to-server/message.dto";
+import { MESSAGE_TO_SERVER_EVENT } from "@shared/src/core/game-room/socket/to-server/message.dto";
 import { useContext, useRef, useState } from "react";
 import { SocketContext } from "src/supporting/socket/socket.context";
 

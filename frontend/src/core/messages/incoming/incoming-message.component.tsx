@@ -1,6 +1,6 @@
-import { MessageFromServer } from "@shared/socket/to-client/message.dto";
-import { SocketContext } from "@src/supporting/socket/socket.context";
+import { MessageFromServer } from "@shared/src/core/game-room/socket/to-client/message.dto";
 import React, { useContext, useEffect, useState } from "react";
+import { SocketContext } from "src/supporting/socket/socket.context";
 
 export const IncomingMessage: React.FC = () => {
     const [received, setReceived] = useState<MessageFromServer | null>(null);

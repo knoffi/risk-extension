@@ -9,7 +9,7 @@ import {
 import {
      LoginRequestDto,
      LoginSuccessResponseDto,
-} from "@shared/http/auth/dto";
+} from "@shared/src/supporting/auth/dto";
 import { AuthenticationService } from "./authentication.service";
 
 @Controller("authentication")

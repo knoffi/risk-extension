@@ -1,11 +1,11 @@
 import {
      Inject,
      Injectable,
-     UnauthorizedException,
      InternalServerErrorException,
+     UnauthorizedException,
 } from "@nestjs/common";
-import { ReadUsersRepo, UserRepository } from "./user.repository";
 import { User } from "./user";
+import { ReadUsersRepo, UserRepository } from "./user.repository";
 
 export interface ReadUserService {
      login: (username: string, password: string) => Omit<User, "password">;
@@ -13,7 +13,7 @@ export interface ReadUserService {
 
 @Injectable()
 export class UserService implements ReadUserService {
-     constructor(@Inject(UserRepository.name) private users: ReadUsersRepo) {}
+     constructor(@Inject(UserRepository) private users: ReadUsersRepo) {}
 
      public login(username: string, password: string): Omit<User, "password"> {
           const users = this.users.findAllByUsername(username);

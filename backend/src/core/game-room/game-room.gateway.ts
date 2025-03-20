@@ -5,18 +5,18 @@ import {
      WebSocketGateway,
      WebSocketServer,
 } from "@nestjs/websockets";
-import { ToClient } from "@shared/socket/events";
-import { MESSAGE_TO_CLIENT_EVENT } from "@shared/socket/to-client/message.dto";
+import { ToClient } from "@shared/src/core/game-room/socket/events";
+import { MESSAGE_TO_CLIENT_EVENT } from "@shared/src/core/game-room/socket/to-client/message.dto";
 import {
      MESSAGE_FROM_CLIENT_EVENT,
      MessageFromClient,
-} from "@shared/socket/to-server/message.dto";
+} from "@shared/src/core/game-room/socket/to-server/message.dto";
 import { Server, Socket } from "socket.io";
 import { AuthenticationService } from "src/supporting/authentication/authentication.service";
 
 @WebSocketGateway({
      cors: {
-          origin: "http://localhost:5173",
+          origin: ["http://localhost:4173", "http://localhost:5173"],
      },
 })
 export class GameRoomGateway {

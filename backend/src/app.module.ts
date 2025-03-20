@@ -1,6 +1,7 @@
 import { Module } from "@nestjs/common";
 import { ServeStaticModule } from "@nestjs/serve-static";
 import { join } from "path";
+import { GameModule } from "src/core/game/game.module";
 import { AppController } from "./app.controller";
 import { GameRoomModule } from "./core/game-room/game-room.module";
 import { AuthenticationModule } from "./supporting/authentication/authentication.module";
@@ -18,6 +19,7 @@ import { MonitoringModule } from "./supporting/monitoring/monitoring.module";
           MonitoringModule,
           GameRoomModule,
           AuthenticationModule,
+          GameModule,
      ],
      controllers: [AppController],
 })
