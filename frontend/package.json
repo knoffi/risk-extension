@@ -8,7 +8,8 @@
         "build:preview": "tsc -b && vite build --mode LOCAL_PREVIEW",
         "lint": "eslint .",
         "lint:fix": "npm run lint -- --fix",
-        "preview": "vite preview"
+        "preview_comment": "Think about setting a specific ip address to liston to (--host value) instead of allowing all",
+        "preview": "vite preview --host"
     },
     "dependencies": {
         "react": "^19.0.0",
