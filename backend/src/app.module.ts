@@ -3,6 +3,7 @@ import { ServeStaticModule } from "@nestjs/serve-static";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { join } from "path";
 import { GameModule } from "src/core/game/game.module";
+import { defaultConfigService } from "src/supporting/config/config.service";
 import { AppController } from "./app.controller";
 import { GameRoomModule } from "./core/game-room/game-room.module";
 import { AuthenticationModule } from "./supporting/authentication/authentication.module";
@@ -19,7 +20,7 @@ import { MonitoringModule } from "./supporting/monitoring/monitoring.module";
           }),
           TypeOrmModule.forRoot({
                type: "postgres",
-               host: "db",
+               host: defaultConfigService.getDBHost(),
                port: 5432,
                // TODO: Find a good way for production
                username: "postgres",
