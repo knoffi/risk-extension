@@ -19,9 +19,7 @@ services:
     environment:
       - PORT=${PORT}
     ports:
-      - "4144:3001" # TODO: Think about reassigning (4144:3001) and choose from https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml
-    depends_on:
-      - db
+      - "4144:3001"
     volumes:
       - ./src:/app/src
 
@@ -32,7 +30,7 @@ services:
       dockerfile: dockerfile.frontend.preview
     container_name: risk-frontend-preview
     ports:
-      - "4173:4173" # TODO: Think about reassigning (4196:4173) and choose from https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml
+      - "4173:4173"
     volumes:
       - ./src:/app/src
 
