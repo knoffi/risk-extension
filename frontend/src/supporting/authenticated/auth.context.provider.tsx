@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { defaultConfigService } from "src/supporting/config/config.service";
 import { AuthContext, AuthService } from "./auth.context";
 
 export const AuthProvider = (props: {
@@ -6,8 +7,10 @@ export const AuthProvider = (props: {
 }) => {
     const [token, setToken] = useState<null | string>(null);
 
+    const origin = defaultConfigService.getApiOrigin();
+
     const login = (username: string, password: string) =>
-        fetch("http://localhost:3001/api/authentication/login", {
+        fetch(origin + "/api/authentication/login", {
             method: "POST",
             body: JSON.stringify({ username, password }),
             headers: {

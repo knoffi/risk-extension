@@ -5,14 +5,15 @@ import { defaultConfigService } from "src/supporting/config/config.service";
 export const AcknowledgementsPage = () => {
     const [isBackendRunning, setIsBackendRunning] = useState(false);
 
-    const backendUrl = defaultConfigService.getSocketUrl();
+    const socketOrigin = defaultConfigService.getSocketOrigin();
+    const apiOrigin = defaultConfigService.getApiOrigin();
     const env = defaultConfigService.getEnvironment();
 
     useEffect(() => {
-        fetch("http://localhost:3001/api/health-check", { method: "GET" }).then(
-            (res) => setIsBackendRunning(res.status === 200 ? true : false)
+        fetch(apiOrigin + "/api/health-check", { method: "GET" }).then((res) =>
+            setIsBackendRunning(res.status === 200 ? true : false)
         );
-    }, []);
+    }, [apiOrigin]);
 
     return (
         <div>
@@ -38,7 +39,8 @@ export const AcknowledgementsPage = () => {
                     }}
                 />
                 <p>
-                    Runs on {env}, using socket connection from: {backendUrl}
+                    Runs on {env}, using socket connection from: {socketOrigin}{" "}
+                    and api from: {apiOrigin}
                 </p>
             </div>
             <br />

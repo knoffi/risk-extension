@@ -5,7 +5,8 @@
     "type": "module",
     "scripts": {
         "dev": "vite --mode LOCAL",
-        "build:preview": "tsc -b && vite build --mode LOCAL_PREVIEW",
+        "build:preview:local": "tsc -b && vite build --mode LOCAL_PREVIEW",
+        "build:preview:local:docker": "tsc -b && vite build --mode LOCAL_PREVIEW_AGAINST_DOCKER",
         "lint": "eslint .",
         "lint:fix": "npm run lint -- --fix",
         "preview_comment": "Think about setting a specific ip address to liston to (--host value) instead of allowing all",

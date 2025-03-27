@@ -18,7 +18,7 @@ export const SocketProvider = (props: {
             return;
         }
 
-        const url = defaultConfigService.getSocketUrl();
+        const url = defaultConfigService.getSocketOrigin();
         const wsSocket = io(url, { auth: { token } });
 
         wsSocket.on("connect", () => {
