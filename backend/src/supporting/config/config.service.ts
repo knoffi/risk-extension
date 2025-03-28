@@ -1,8 +1,10 @@
 import { Injectable } from "@nestjs/common";
 import { JwtModuleOptions, JwtOptionsFactory } from "@nestjs/jwt";
+import { TypeOrmModuleOptions } from "@nestjs/typeorm";
+import { DataSourceOptions } from "typeorm";
 
 export type ReadConfig = ReadAuthConfig & ReadEnvConfig & ReadDBConnection;
-type ProcessKey = AuthKey | EnvKey | DBHostKey;
+type ProcessKey = AuthKey | EnvKey | DBKey;
 
 export type ReadEnvConfig = { getEnvInfo(): string };
 type EnvKey = "ENV_NAME";
@@ -15,20 +17,72 @@ type AuthKey = "AUTH_SECRET";
 export type ReadDBConnection = {
      /** Returns either an ip address or an alias name like localhost or db (see docker-compose file) */
      getDBHost: () => string;
+     getDBPort: () => number;
+     getDBUsername: () => string;
+     getDBPassword: () => string;
+     getDBName: () => string;
+     getDBConfig: () => TypeOrmModuleOptions;
+     getDBRetryAttempts: () => number;
+     getDBDataSource: () => DataSourceOptions;
 };
+type DBKey =
+     | DBHostKey
+     | DBPortKey
+     | DBPasswordKey
+     | DBUsernameKey
+     | DBNameKey
+     | DBRetryAttemptsKey;
 type DBHostKey = "DB_HOST";
+type DBPortKey = "DB_PORT";
+type DBUsernameKey = "DB_USERNAME";
+type DBPasswordKey = "DB_PASSWORD";
+type DBNameKey = "DB_NAME";
+type DBRetryAttemptsKey = "DB_RETRY_ATTEMPTS";
 
 @Injectable()
 export class ConfigService implements ReadConfig {
-     getDBHost(): string {
-          console.error(this.getOrThrow("DB_HOST"));
-          return this.getOrThrow("DB_HOST");
+     getDBDataSource() {
+          return this.getDBConfig();
+     }
+     getDBConfig(): TypeOrmModuleOptions & { type: "postgres" } {
+          return {
+               type: "postgres",
+               host: this.getDBHost(),
+               port: this.getDBPort(),
+               username: this.getDBUsername(),
+               password: this.getDBPassword(),
+               database: this.getDBName(),
+               entities: ["dist/**/*.entity{.ts,.js}"],
+               synchronize: false,
+               autoLoadEntities: true,
+               migrations: ["dit/**/migrations/*{.js,.ts}"],
+               retryAttempts: this.getDBRetryAttempts(),
+          };
      }
 
-     getAuthSecret(): string {
+     getDBRetryAttempts() {
+          return parseInt(this.getOrThrow("DB_RETRY_ATTEMPTS"));
+     }
+     getDBHost() {
+          return this.getOrThrow("DB_HOST");
+     }
+     getDBPassword() {
+          return this.getOrThrow("DB_PASSWORD");
+     }
+     getDBUsername() {
+          return this.getOrThrow("DB_USERNAME");
+     }
+     getDBPort() {
+          return parseInt(this.getOrThrow("DB_PORT"));
+     }
+     getDBName() {
+          return this.getOrThrow("DB_NAME");
+     }
+
+     getAuthSecret() {
           return this.getOrThrow("AUTH_SECRET");
      }
-     getEnvInfo(): string {
+     getEnvInfo() {
           return this.getOrThrow("ENV_NAME");
      }
 

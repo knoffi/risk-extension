@@ -1,5 +1,12 @@
 import { RoleId } from "@shared/src/supporting/user/dto";
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import {
+     Column,
+     CreateDateColumn,
+     DeleteDateColumn,
+     Entity,
+     PrimaryGeneratedColumn,
+     UpdateDateColumn,
+} from "typeorm";
 
 @Entity()
 export class UserEntity {
@@ -15,4 +22,13 @@ export class UserEntity {
      // TODO: Should be hashed, needs salt & pepper
      @Column()
      password: string;
+
+     @CreateDateColumn({ type: "timestamptz" })
+     readonly createdAt!: Date;
+
+     @UpdateDateColumn({ type: "timestamptz" })
+     readonly updatedAt!: Date;
+
+     @DeleteDateColumn({ type: "timestamptz" })
+     deletedAt!: Date;
 }
