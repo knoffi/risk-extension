@@ -6,7 +6,7 @@ import { DataSourceOptions } from "typeorm";
 export type ReadConfig = ReadAuthConfig & ReadEnvConfig & ReadDBConnection;
 type ProcessKey = AuthKey | EnvKey | DBKey;
 
-export type ReadEnvConfig = { getEnvInfo(): string };
+export type ReadEnvConfig = { getEnvInfo(): string; isLocal(): boolean };
 type EnvKey = "ENV_NAME";
 
 export type ReadAuthConfig = JwtOptionsFactory & {
@@ -54,8 +54,9 @@ export class ConfigService implements ReadConfig {
                database: this.getDBName(),
                entities: ["dist/**/*.entity{.ts,.js}"],
                synchronize: false,
+               migrationsRun: this.isLocal() ? true : false,
                autoLoadEntities: true,
-               migrations: ["dit/**/migrations/*{.js,.ts}"],
+               migrations: ["dist/**/migrations/*.js"],
                retryAttempts: this.getDBRetryAttempts(),
           };
      }
@@ -84,6 +85,9 @@ export class ConfigService implements ReadConfig {
      }
      getEnvInfo() {
           return this.getOrThrow("ENV_NAME");
+     }
+     isLocal(): boolean {
+          return this.getOrThrow("ENV_NAME") === "local";
      }
 
      createJwtOptions(): Promise<JwtModuleOptions> | JwtModuleOptions {
