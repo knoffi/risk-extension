@@ -21,9 +21,9 @@
           "MIGRATIONS": "===============================================================================================",
           "typeorm": "node -r ts-node/register --env-file=local.env ./node_modules/typeorm/cli",
           "migration:run": "npm run typeorm migration:run -- -d ./src/db/type-orm.ts",
-          "migration:generate": "npm run typeorm -- -d ./src/config/typeorm.ts migration:generate ./src/migrations/$npm_config_name",
-          "migration:create": "npm run typeorm -- migration:create ./src/migrations/$npm_config_name",
-          "migration:revert": "npm run typeorm -- -d ./src/config/typeorm.ts migration:revert"
+          "migration:run:fake": "npm run typeorm migration:run -- -d ./src/db/type-orm.ts --fake",
+          "migration:revert": "npm run typeorm -- -d ./src/db/type-orm.ts migration:revert",
+          "migration:revert:fake": "npm run typeorm -- -d ./src/db/type-orm.ts migration:revert --fake"
      },
      "scriptComments": {
           "start": "Nearly the same as 'nest build && node --watch-path=./src dist/backend/src/main' "
