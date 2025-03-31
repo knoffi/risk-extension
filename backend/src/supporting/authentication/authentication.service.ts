@@ -5,6 +5,8 @@ import { ConfigService } from "src/supporting/config/config.service";
 import { ReadUserService, UserService } from "src/supporting/user/user.service";
 
 type AccessToken = Flavor<"access-token">;
+type Await<T> = T extends Promise<infer K> ? K : never;
+type DecryptedUser = Await<ReturnType<UserService["login"]>>;
 
 @Injectable()
 export class AuthenticationService {
@@ -18,19 +20,25 @@ export class AuthenticationService {
           username: string,
           password: string
      ): Promise<AccessToken> {
-          const user = await this.userService.login(username, password);
+          const user: DecryptedUser = await this.userService.login(
+               username,
+               password
+          );
 
           return this.jwtService.signAsync(user, { expiresIn: "2 days" });
      }
 
-     public async verifyToken(jwt: string): Promise<boolean> | never {
+     public async verifyToken(jwt: string): Promise<DecryptedUser | void> {
           try {
-               await this.jwtService.verifyAsync(jwt, {
-                    secret: this.configService.getAuthSecret(),
-               });
-               return true;
+               const user = await this.jwtService.verifyAsync<DecryptedUser>(
+                    jwt,
+                    {
+                         secret: this.configService.getAuthSecret(),
+                    }
+               );
+               return user;
           } catch {
-               return false;
+               return;
           }
      }
 }
