@@ -9,14 +9,28 @@
           "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
           "start": "nest start --watch --exec 'node --env-file local.env dist/backend/src/main'",
           "start:debug": "nest start --debug --watch --exec 'node --env-file local.env dist/backend/src/main'",
-          "start:prod": "node dist/main",
+          "start:prod": "node --env-file prod.env dist/backend/src/main",
           "lint": "eslint '{src,apps,libs,test}/**/*.ts'",
           "lint:fix": "npm run lint -- --fix",
+          "TESTING": "===============================================================================================",
           "test": "mocha",
           "test:watch": "jest --watch",
           "test:cov": "jest --coverage",
           "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-          "test:e2e": "echo 'No e2e tests implemented yet.'"
+          "test:e2e": "echo 'No e2e tests implemented yet.'",
+          "MIGRATIONS": "===============================================================================================",
+          "typeorm": "node --env-file=prod.env ./node_modules/typeorm/cli",
+          "typeorm:local": "node --env-file=local.env ./node_modules/typeorm/cli",
+          "migration:run": "npm run typeorm migration:run -- -d ./dist/backend/src/db/type-orm.js",
+          "migration-local:run": "npm run typeorm:local migration:run -- -d ./dist/backend/src/db/type-orm.js",
+          "migration:run:fake": "npm run typeorm migration:run -- -d ./dist/backend/src/db/type-orm.js --fake",
+          "migration-local:run:fake": "npm run typeorm:local migration:run -- -d ./dist/backend/src/db/type-orm.js --fake",
+          "migration:revert": "npm run typeorm -- -d ./dist/backend/src/db/type-orm.js migration:revert",
+          "migration-local:revert": "npm run typeorm:local -- -d ./dist/backend/src/db/type-orm.js migration:revert",
+          "migration:revert:fake": "npm run typeorm -- -d ./dist/backend/src/db/type-orm.js migration:revert --fake",
+          "migration-local:revert:fake": "npm run typeorm:local -- -d ./dist/backend/src/db/type-orm.js migration:revert --fake",
+          "relations:synchronize": "npm run typeorm -- -d ./dist/backend/src/db/type-orm.js schema:sync",
+          "relations-local:synchronize": "npm run typeorm:local -- -d ./dist/backend/src/db/type-orm.js schema:sync"
      },
      "scriptComments": {
           "start": "Nearly the same as 'nest build && node --watch-path=./src dist/backend/src/main' "
@@ -28,12 +42,15 @@
           "@nestjs/platform-express": "11.0.6",
           "@nestjs/platform-socket.io": "^11.0.7",
           "@nestjs/serve-static": "5.0.1",
+          "@nestjs/typeorm": "^11.0.0",
           "@nestjs/websockets": "^11.0.7",
           "class-transformer": "0.5.1",
           "class-validator": "0.14.1",
+          "pg": "^8.14.1",
           "reflect-metadata": "0.2.2",
           "rimraf": "6.0.1",
-          "rxjs": "7.8.1"
+          "rxjs": "7.8.1",
+          "typeorm": "^0.3.21"
      },
      "devDependencies": {
           "@eslint/eslintrc": "3.2.0",

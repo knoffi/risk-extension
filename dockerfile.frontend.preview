@@ -1,0 +1,15 @@
+FROM node:22
+
+WORKDIR /app
+
+RUN mkdir ./frontend
+
+COPY ./frontend ./frontend
+
+RUN mkdir ./shared
+
+COPY ./shared ./shared
+
+RUN cd ./frontend && npm i && npm run build:preview:local:docker
+
+CMD cd ./frontend && npm run preview

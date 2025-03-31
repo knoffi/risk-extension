@@ -1,0 +1,47 @@
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    container_name: risk-postgres
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  backend:
+    #  restart: always
+    build:
+      context: .
+      dockerfile: dockerfile.backend
+    container_name: risk-backend
+    environment:
+      - PORT=${PORT}
+    ports:
+      - "4144:3001"
+    volumes:
+      - ./src:/app/src
+
+  frontend:
+    restart: always
+    build:
+      context: .
+      dockerfile: dockerfile.frontend.preview
+    container_name: risk-frontend-preview
+    ports:
+      - "4173:4173"
+    volumes:
+      - ./src:/app/src
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    container_name: risk-pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=pgadmin4
+    ports:
+      - "5050:80"
+    depends_on:
+      - db

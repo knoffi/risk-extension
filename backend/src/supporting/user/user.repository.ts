@@ -1,37 +1,31 @@
 import { Injectable } from "@nestjs/common";
-import { User } from "./user";
+import { InjectRepository } from "@nestjs/typeorm";
+import { User } from "src/supporting/user/user";
+import { UserEntity } from "src/supporting/user/user.entity";
+import { Repository } from "typeorm";
 
 export interface ReadUsersRepo {
-     findAllByUsername: (username: string) => User[];
+     findAllByUsername: (username: string) => Promise<User[]>;
+}
+
+export interface WriteUsersRepo {
+     create: (
+          user: Omit<User, "name" | "password" | "roleId">
+     ) => Promise<void>;
 }
 
 @Injectable()
 export class UserRepository implements ReadUsersRepo {
-     // TODO: Good enough for now, implement real repository
-     private inMemoryUsers: User[] = [
-          {
-               userId: "123",
-               username: "Game Master",
-               password: "aA1!",
-               roleId: "Game master",
-          },
-          {
-               userId: "456",
-               username: "Player1",
-               password: "player1",
-               roleId: "player",
-          },
-          {
-               userId: "789",
-               username: "Player2",
-               password: "player2",
-               roleId: "player",
-          },
-     ];
+     constructor(
+          @InjectRepository(UserEntity) private users: Repository<UserEntity>
+     ) {}
 
-     public findAllByUsername(username: string): User[] {
-          return this.inMemoryUsers.filter(
-               (user) => user.username === username
-          );
+     public async findAllByUsername(username: string): Promise<User[]> {
+          const results = await this.users.find({ where: { name: username } });
+          return results.map((entity) => transform(entity));
      }
+}
+
+function transform({ id, role, name, password }: UserEntity): User {
+     return { id: id.toString(), name, password, role };
 }

@@ -20,5 +20,8 @@ npm-debug.log
 # dist
 /dist
 
+# intermediate env-variable solution
+prod.env
+
 #frontend build
 /build
