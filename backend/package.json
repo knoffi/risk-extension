@@ -23,7 +23,8 @@
           "migration:run": "npm run typeorm migration:run -- -d ./dist/backend/src/db/type-orm.js",
           "migration:run:fake": "npm run typeorm migration:run -- -d ./dist/backend/src/db/type-orm.js --fake",
           "migration:revert": "npm run typeorm -- -d ./dist/backend/src/db/type-orm.js migration:revert",
-          "migration:revert:fake": "npm run typeorm -- -d ./dist/backend/src/db/type-orm.js migration:revert --fake"
+          "migration:revert:fake": "npm run typeorm -- -d ./dist/backend/src/db/type-orm.js migration:revert --fake",
+          "relations:synchronize": "npm run typeorm -- -d ./dist/backend/src/db/type-orm.js schema:sync"
      },
      "scriptComments": {
           "start": "Nearly the same as 'nest build && node --watch-path=./src dist/backend/src/main' "

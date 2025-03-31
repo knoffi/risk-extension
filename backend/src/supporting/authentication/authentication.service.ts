@@ -14,8 +14,11 @@ export class AuthenticationService {
           private configService: ConfigService
      ) {}
 
-     public login(username: string, password: string): Promise<AccessToken> {
-          const user = this.userService.login(username, password);
+     public async login(
+          username: string,
+          password: string
+     ): Promise<AccessToken> {
+          const user = await this.userService.login(username, password);
 
           return this.jwtService.signAsync(user, { expiresIn: "2 days" });
      }

@@ -1,3 +1,3 @@
 import { Flavor } from "@shared/src/util/flavor";
 
-export type UserId = Flavor<"userid">;
+export type RoleId = Flavor<"roleId">;

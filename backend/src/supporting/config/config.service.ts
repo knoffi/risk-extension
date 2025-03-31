@@ -56,6 +56,7 @@ export class ConfigService implements ReadConfig {
                synchronize: false,
                migrationsRun: this.isLocal() ? true : false,
                autoLoadEntities: true,
+               // NOTE: To run migrations script during dev, build backend or run backend in dev-mode, so that dist gets updated with code changes
                migrations: ["dist/**/migrations/*.js"],
                retryAttempts: this.getDBRetryAttempts(),
           };

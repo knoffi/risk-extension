@@ -1,8 +1,8 @@
-import { RoleId } from "@shared/src/supporting/user/dto";
+import { Role } from "src/supporting/role/role";
 
 export interface User {
      id: string;
      name: string;
      password: string;
-     roleId: RoleId;
+     role: Role;
 }

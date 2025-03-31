@@ -34,6 +34,6 @@ export class UserRepository implements ReadUsersRepo {
      }
 }
 
-function transform({ id, roleId, name, password }: UserEntity): User {
-     return { id: id.toString(), name, password, roleId };
+function transform({ id, role, name, password }: UserEntity): User {
+     return { id: id.toString(), name, password, role };
 }
