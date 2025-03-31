@@ -18,15 +18,7 @@ export interface WriteUsersRepo {
 export class UserRepository implements ReadUsersRepo {
      constructor(
           @InjectRepository(UserEntity) private users: Repository<UserEntity>
-     ) {
-          const newUser = this.users.create({
-               name: "super-admino",
-               password: "abcdefg",
-          });
-          // void this.users.insert(newUser).then(() => {
-          //      console.log("I created!");
-          // });
-     }
+     ) {}
 
      public async findAllByUsername(username: string): Promise<User[]> {
           const results = await this.users.find({ where: { name: username } });
