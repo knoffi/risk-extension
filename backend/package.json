@@ -19,12 +19,18 @@
           "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
           "test:e2e": "echo 'No e2e tests implemented yet.'",
           "MIGRATIONS": "===============================================================================================",
-          "typeorm": "node --env-file=local.env ./node_modules/typeorm/cli",
+          "typeorm": "node --env-file=prod.env ./node_modules/typeorm/cli",
+          "typeorm:local": "node --env-file=local.env ./node_modules/typeorm/cli",
           "migration:run": "npm run typeorm migration:run -- -d ./dist/backend/src/db/type-orm.js",
+          "migration-local:run": "npm run typeorm:local migration:run -- -d ./dist/backend/src/db/type-orm.js",
           "migration:run:fake": "npm run typeorm migration:run -- -d ./dist/backend/src/db/type-orm.js --fake",
+          "migration-local:run:fake": "npm run typeorm:local migration:run -- -d ./dist/backend/src/db/type-orm.js --fake",
           "migration:revert": "npm run typeorm -- -d ./dist/backend/src/db/type-orm.js migration:revert",
+          "migration-local:revert": "npm run typeorm:local -- -d ./dist/backend/src/db/type-orm.js migration:revert",
           "migration:revert:fake": "npm run typeorm -- -d ./dist/backend/src/db/type-orm.js migration:revert --fake",
-          "relations:synchronize": "npm run typeorm -- -d ./dist/backend/src/db/type-orm.js schema:sync"
+          "migration-local:revert:fake": "npm run typeorm:local -- -d ./dist/backend/src/db/type-orm.js migration:revert --fake",
+          "relations:synchronize": "npm run typeorm -- -d ./dist/backend/src/db/type-orm.js schema:sync",
+          "relations-local:synchronize": "npm run typeorm:local -- -d ./dist/backend/src/db/type-orm.js schema:sync"
      },
      "scriptComments": {
           "start": "Nearly the same as 'nest build && node --watch-path=./src dist/backend/src/main' "
