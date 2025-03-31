@@ -10,12 +10,14 @@ import {
      LoginRequestDto,
      LoginSuccessResponseDto,
 } from "@shared/src/supporting/auth/dto";
+import { Public } from "src/supporting/authentication/public.decorator";
 import { AuthenticationService } from "./authentication.service";
 
 @Controller("authentication")
 export class AuthenticationController {
      constructor(private authService: AuthenticationService) {}
 
+     @Public()
      @HttpCode(HttpStatus.OK)
      @Post("login")
      async signIn(@Body() loginDto: unknown): Promise<LoginSuccessResponseDto> {
