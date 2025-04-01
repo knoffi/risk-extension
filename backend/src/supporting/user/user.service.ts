@@ -5,7 +5,6 @@ import {
      UnauthorizedException,
 } from "@nestjs/common";
 import { CreateUserDto, Foo } from "@shared/src/supporting/user/dto";
-import { ReadRoles, RoleService } from "src/supporting/role/role.service";
 import { User } from "./user";
 import {
      ReadUsersRepo,
@@ -25,8 +24,7 @@ export interface ReadUserService {
 @Injectable()
 export class UserService implements ReadUserService {
      constructor(
-          @Inject(UserRepository) private users: ReadUsersRepo & WriteUsersRepo,
-          @Inject(RoleService) private roleService: ReadRoles
+          @Inject(UserRepository) private users: ReadUsersRepo & WriteUsersRepo
      ) {}
 
      public foo(res: Foo) {

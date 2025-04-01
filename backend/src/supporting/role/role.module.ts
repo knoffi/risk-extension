@@ -9,6 +9,5 @@ import { RoleService } from "src/supporting/role/role.service";
      imports: [TypeOrmModule.forFeature([RoleEntity])],
      controllers: [RoleController],
      providers: [RoleService, RoleRepository],
-     exports: [RoleService],
 })
 export class RoleModule {}
