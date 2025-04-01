@@ -19,7 +19,7 @@ export class UserEntity {
      @Column({ type: "char", length: 20 })
      name: string;
 
-     @Column()
+     @Column({ nullable: true })
      roleId: RoleId;
 
      @ManyToOne(() => RoleEntity)
