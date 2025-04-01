@@ -4,19 +4,42 @@ import {
      InternalServerErrorException,
      UnauthorizedException,
 } from "@nestjs/common";
+import { CreateUserDto, Foo } from "@shared/src/supporting/user/dto";
+import { ReadRoles, RoleService } from "src/supporting/role/role.service";
 import { User } from "./user";
-import { ReadUsersRepo, UserRepository } from "./user.repository";
+import {
+     ReadUsersRepo,
+     UserRepository,
+     WriteUsersRepo,
+} from "./user.repository";
 
 export interface ReadUserService {
      login: (
           username: string,
           password: string
      ) => Promise<Omit<User, "password">>;
+
+     create: (newUser: CreateUserDto) => Promise<void>;
 }
 
 @Injectable()
 export class UserService implements ReadUserService {
-     constructor(@Inject(UserRepository) private users: ReadUsersRepo) {}
+     constructor(
+          @Inject(UserRepository) private users: ReadUsersRepo & WriteUsersRepo,
+          @Inject(RoleService) private roleService: ReadRoles
+     ) {}
+
+     public foo(res: Foo) {
+          console.log(res.username);
+     }
+
+     public async create(newUser: CreateUserDto): Promise<void> {
+          return this.users.create({
+               name: newUser.name,
+               password: newUser.password,
+               roleId: newUser.roleId,
+          });
+     }
 
      public async login(
           username: string,
@@ -36,5 +59,9 @@ export class UserService implements ReadUserService {
           if (actualPassword !== password) throw new UnauthorizedException();
 
           return userPartial;
+     }
+
+     public async findAll(): Promise<User[]> {
+          return this.users.findAll();
      }
 }

@@ -22,7 +22,7 @@ export class UserEntity {
      @Column({ nullable: true })
      roleId: RoleId;
 
-     @ManyToOne(() => RoleEntity)
+     @ManyToOne(() => RoleEntity, (role) => role.users)
      role: RoleEntity;
 
      // TODO: Should be hashed, needs salt & pepper
@@ -30,13 +30,13 @@ export class UserEntity {
      password: string;
 
      @CreateDateColumn({ type: "timestamptz" })
-     readonly createdAt!: Date;
+     readonly createdAt: Date;
 
      @UpdateDateColumn({ type: "timestamptz" })
-     readonly updatedAt!: Date;
+     readonly updatedAt: Date;
 
      @DeleteDateColumn({ type: "timestamptz" })
-     deletedAt!: Date;
+     readonly deletedAt: Date;
 }
 
-export type CreateUserEntity = Pick<UserEntity, "name" | "password" | "role">;
+export type CreateUserEntity = Pick<UserEntity, "name" | "password" | "roleId">;
