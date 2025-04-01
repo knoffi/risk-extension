@@ -29,11 +29,11 @@ export class AuthenticationController {
                );
           }
 
-          const token = await this.authService.login(
+          const { token, user } = await this.authService.login(
                loginDto.username,
                loginDto.password
           );
-          return { token };
+          return { token, user };
      }
 }
 

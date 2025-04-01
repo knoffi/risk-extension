@@ -20,7 +20,10 @@ export class UserRepository implements ReadUsersRepo, WriteUsersRepo {
      ) {}
 
      public async findAllByUsername(username: string): Promise<User[]> {
-          const results = await this.users.find({ where: { name: username } });
+          const results = await this.users.find({
+               where: { name: username },
+               relations: { role: true },
+          });
           return results.map((entity) => transform(entity));
      }
 
@@ -45,5 +48,5 @@ function transform({ id, role, name, password, roleId }: UserEntity): User {
           password,
           role,
           roleId,
-     } as unknown as User;
+     };
 }

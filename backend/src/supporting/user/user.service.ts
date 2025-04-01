@@ -4,7 +4,7 @@ import {
      InternalServerErrorException,
      UnauthorizedException,
 } from "@nestjs/common";
-import { CreateUserDto, Foo } from "@shared/src/supporting/user/dto";
+import { CreateUserDto } from "@shared/src/supporting/user/dto";
 import { User } from "./user";
 import {
      ReadUsersRepo,
@@ -26,10 +26,6 @@ export class UserService implements ReadUserService {
      constructor(
           @Inject(UserRepository) private users: ReadUsersRepo & WriteUsersRepo
      ) {}
-
-     public foo(res: Foo) {
-          console.log(res.username);
-     }
 
      public async create(newUser: CreateUserDto): Promise<void> {
           return this.users.create({

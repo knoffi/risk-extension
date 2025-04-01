@@ -1,4 +1,4 @@
-import { RoleId } from "@shared/src/supporting/role/dto";
+import { GetRoleResponse, RoleId } from "@shared/src/supporting/role/dto";
 import { Flavor } from "@shared/src/util/flavor";
 
 export type UserId = Flavor<"userid">;
@@ -9,6 +9,8 @@ export interface CreateUserDto {
      roleId: RoleId;
 }
 
-export interface Foo {
-     username: string;
+export interface GetUserResponse {
+     id: string;
+     name: string;
+     role: GetRoleResponse;
 }
