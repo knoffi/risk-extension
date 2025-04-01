@@ -7,6 +7,7 @@ import { GameModule } from "src/core/game/game.module";
 import { AuthGuard } from "src/supporting/authentication/auth.guard";
 import { ConfigModule } from "src/supporting/config/config.module";
 import { ConfigService } from "src/supporting/config/config.service";
+import { RoleModule } from "src/supporting/role/role.module";
 import { UserModule } from "src/supporting/user/user.module";
 import { AppController } from "./app.controller";
 import { GameRoomModule } from "./core/game-room/game-room.module";
@@ -28,6 +29,7 @@ import { MonitoringModule } from "./supporting/monitoring/monitoring.module";
                useFactory: (config: ConfigService) => config.getDBConfig(),
           }),
           UserModule,
+          RoleModule,
           MonitoringModule,
           GameRoomModule,
           AuthenticationModule,
