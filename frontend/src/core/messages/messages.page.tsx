@@ -4,7 +4,7 @@ import { defaultConfigService } from "src/supporting/config/config.service";
 import { IncomingMessage } from "./incoming/incoming-message.component";
 import { SendMessage } from "./send/send.component";
 
-export const MessagesPage = () => {
+export const MessagesPage: React.FC = () => {
     const { token } = useContext(AuthContext);
 
     return (

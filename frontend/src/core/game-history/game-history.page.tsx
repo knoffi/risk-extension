@@ -4,6 +4,7 @@ import {
 } from "@shared/src/core/game/dto";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
+import { Pages } from "src/pages";
 import { defaultConfigService } from "src/supporting/config/config.service";
 
 type FinishedGame = Omit<FinishedGameRaw, "endedAt" | "startedAt"> & {
@@ -19,7 +20,7 @@ function transform(game: FinishedGameRaw): FinishedGame {
     };
 }
 
-export const GameHistoryPage = () => {
+export const GameHistoryPage: React.FC = () => {
     const [history, setHistory] = useState<FinishedGame[]>([]);
 
     useEffect(() => {
@@ -39,7 +40,7 @@ export const GameHistoryPage = () => {
             <h1>Game History</h1>
             <FinishedGames games={history} />
             <p>
-                <Link to="/login">Back to Login</Link>
+                <Link to={Pages.LOGIN_PUBLIC}>Back to Login</Link>
             </p>
         </div>
     );

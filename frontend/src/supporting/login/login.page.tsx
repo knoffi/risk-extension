@@ -1,5 +1,6 @@
 import { useCallback, useContext, useState } from "react";
 import { Link, useNavigate } from "react-router";
+import { Pages } from "src/pages";
 import { AuthContext } from "src/supporting/authenticated/auth.context";
 export const LoginPage: React.FC = () => {
     const [username, setUsername] = useState("");
@@ -9,7 +10,8 @@ export const LoginPage: React.FC = () => {
     const { login, token } = useContext(AuthContext);
 
     const onLoginSuccess = useCallback(() => {
-        navigate("/home");
+        // navigate("/home");
+        navigate(Pages.MANAGE_USERS_PRIVAT);
     }, [navigate]);
 
     const onLoginFail = useCallback((error: string) => {
@@ -48,13 +50,13 @@ export const LoginPage: React.FC = () => {
             <p>Token: {token}</p>
 
             <p>
-                <Link to={"/home"}>Go To Home</Link>
+                <Link to={Pages.HOME_PRIVAT}>Go To Home</Link>
             </p>
             <p>
-                <Link to={"/acknowledgements"}>Acknowledgements</Link>
+                <Link to={Pages.ACKNOWLEDGEMENTS_PUBLIC}>Acknowledgements</Link>
             </p>
             <p>
-                <Link to={"/game-history"}>See Previous Games</Link>
+                <Link to={Pages.GAME_HISTORY_PUBLIC}>See Previous Games</Link>
             </p>
         </div>
     );

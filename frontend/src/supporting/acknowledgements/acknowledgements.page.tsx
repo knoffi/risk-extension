@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
+import { Pages } from "src/pages";
 import { defaultConfigService } from "src/supporting/config/config.service";
 
-export const AcknowledgementsPage = () => {
+export const AcknowledgementsPage: React.FC = () => {
     const [isBackendRunning, setIsBackendRunning] = useState(false);
 
     const socketOrigin = defaultConfigService.getSocketOrigin();
@@ -45,7 +46,7 @@ export const AcknowledgementsPage = () => {
             </div>
             <br />
             <p>
-                <Link to={"/login"}>Back to Login</Link>
+                <Link to={Pages.LOGIN_PUBLIC}>Back to Login</Link>
             </p>
         </div>
     );
