@@ -1,5 +1,9 @@
+import { GetUserResponse } from "@shared/src/supporting/user/dto";
+
+export type MessageToServerSender = GetUserResponse;
+
 export interface MessageToServer {
-     senderId: string;
+     sender: MessageToServerSender;
      message: string;
 }
 export const MESSAGE_TO_SERVER_EVENT = "send_message";

@@ -5,13 +5,13 @@ import { IncomingMessage } from "./incoming/incoming-message.component";
 import { SendMessage } from "./send/send.component";
 
 export const MessagesPage: React.FC = () => {
-    const { token } = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
 
     return (
         <div className="App">
             <header className="App-header">
                 <p>{defaultConfigService.getNumberOfTurtles()}</p>
-                <p>Token: {token == null ? "null" : token}</p>
+                <p>You are: {user == null ? "null" : user.name}</p>
                 <IncomingMessage />
                 <SendMessage />
             </header>

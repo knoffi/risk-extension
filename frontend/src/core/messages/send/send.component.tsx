@@ -1,13 +1,12 @@
 import { MESSAGE_TO_SERVER_EVENT } from "@shared/src/core/game-room/socket/to-server/message.dto";
-import { useContext, useRef, useState } from "react";
+import { useContext, useState } from "react";
+import { AuthContext } from "src/supporting/authenticated/auth.context";
 import { SocketContext } from "src/supporting/socket/socket.context";
 
 export function SendMessage() {
     const [msg, setMsg] = useState("");
     const socket = useContext(SocketContext);
-    const senderId = useRef(
-        new Date().toLocaleTimeString("de").replace(/:/g, "")
-    );
+    const { user } = useContext(AuthContext);
 
     const sendMessage = async () => {
         if (!socket || !socket.isConnected) {
@@ -15,17 +14,18 @@ export function SendMessage() {
             throw new Error("Socket missing or disconnected");
         }
 
+        if (!user) {
+            throw new Error("User required for sending messages via socket");
+        }
+
         socket.emit(MESSAGE_TO_SERVER_EVENT, {
-            senderId: senderId.current,
+            sender: user,
             message: msg,
         });
     };
 
     return (
         <div>
-            <div
-                style={{ backgroundColor: "grey" }}
-            >{`You are user: ${senderId.current}`}</div>
             <input
                 type="text"
                 onChange={(e) => setMsg(e.target.value)}

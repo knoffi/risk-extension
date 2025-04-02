@@ -60,7 +60,7 @@ export class GameRoomGateway {
      ): void {
           console.log("Incoming message from socket id " + socket.id);
           this.emitToAll(MESSAGE_TO_CLIENT_EVENT, {
-               message: `User ${data.senderId} says: ${data.message}`,
+               message: `${data.sender.role} ${data.sender.name} says: ${data.message}`,
           });
           return undefined;
      }
