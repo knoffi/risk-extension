@@ -1,9 +1,4 @@
-import { RoleId } from "@shared/src/supporting/role/dto";
-
-export enum RoleNames {
-     GAMER_MASTER = "Game master",
-     PLAYER = "Player",
-}
+import { RoleId, RoleNames } from "@shared/src/supporting/role/dto";
 
 export interface Role {
      id: RoleId;

@@ -1,4 +1,4 @@
-import { RoleNames } from "src/supporting/role/role";
+import { RoleNames } from "@shared/src/supporting/role/dto";
 import { RoleEntity } from "src/supporting/role/role.entity";
 import { UserEntity } from "src/supporting/user/user.entity";
 import { MigrationInterface, QueryRunner } from "typeorm";

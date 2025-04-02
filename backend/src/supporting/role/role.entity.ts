@@ -1,5 +1,4 @@
-import { RoleId } from "@shared/src/supporting/role/dto";
-import { RoleNames } from "src/supporting/role/role";
+import { RoleId, RoleNames } from "@shared/src/supporting/role/dto";
 import { UserEntity } from "src/supporting/user/user.entity";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
