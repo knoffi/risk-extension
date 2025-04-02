@@ -16,7 +16,7 @@ export class GameRepository implements ReadGamesRepo {
                endedAt: "2025-03-02T19:15:22Z",
                winningFraction: "Id-of-rev-a",
                gameId: "123",
-               winningPlayer: "Id-of-player1",
+               winningPlayer: "Joy",
                title: "The will of the people",
           },
           {
@@ -24,7 +24,7 @@ export class GameRepository implements ReadGamesRepo {
                endedAt: "2024-11-02Z19:15:22",
                winningFraction: "Id-of-int-v",
                gameId: "456",
-               winningPlayer: "Id-of-player2",
+               winningPlayer: "Martin",
                title: "Democracy now!",
           },
      ];
