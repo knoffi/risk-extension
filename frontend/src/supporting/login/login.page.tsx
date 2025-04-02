@@ -10,8 +10,7 @@ export const LoginPage: React.FC = () => {
     const { login, token } = useContext(AuthContext);
 
     const onLoginSuccess = useCallback(() => {
-        // navigate("/home");
-        navigate(Pages.MANAGE_USERS_PRIVAT);
+        navigate(Pages.HOME_PRIVAT);
     }, [navigate]);
 
     const onLoginFail = useCallback((error: string) => {
