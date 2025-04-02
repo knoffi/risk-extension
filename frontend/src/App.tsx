@@ -4,8 +4,8 @@ import { HomePage } from "src/core/home/home.page";
 import { AcknowledgementsPage } from "src/supporting/acknowledgements/acknowledgements.page";
 import { ManageUserPage } from "src/supporting/user-management/manage-user.page";
 import { MessagesPage } from "./core/messages/messages.page";
+import { AuthenticatedGuard } from "./supporting/authenticated/authenticated-guard.component";
 import { LoginPage } from "./supporting/login/login.page";
-import { AuthenticatedGuard } from "./supporting/navigation/authenticated-guard.component";
 
 function App() {
     return (
