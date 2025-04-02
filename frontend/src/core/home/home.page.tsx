@@ -1,7 +1,8 @@
 import React, { useContext } from "react";
-import { Link } from "react-router";
 import { Pages } from "src/pages";
+import { NavLink } from "src/shared/components/nav-link.component";
 import { AuthContext } from "src/supporting/authenticated/auth.context";
+import { Permissions } from "src/supporting/permissions/has-permission";
 
 export const HomePage: React.FC = () => {
     const { user } = useContext(AuthContext);
@@ -14,11 +15,21 @@ export const HomePage: React.FC = () => {
         <div style={{ gap: 5 }}>
             <p>{greeting}</p>
             <div>
-                <Link to={Pages.MANAGE_USERS_PRIVAT}>Manage Users</Link>
+                <NavLink
+                    title="Manage Users"
+                    to={Pages.MANAGE_USERS_PRIVAT}
+                    restriction={{
+                        mustBeAuthenticated: true,
+                        permissions: [Permissions.CAN_MANAGE_USERS],
+                    }}
+                />
             </div>
             <div>
-                {" "}
-                <Link to={Pages.MESSAGES_PRIVAT}>Send Messages</Link>
+                <NavLink
+                    title="Send Messages"
+                    to={Pages.MESSAGES_PRIVAT}
+                    restriction={{ mustBeAuthenticated: true }}
+                />
             </div>
         </div>
     );

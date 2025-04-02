@@ -1,6 +1,7 @@
 import { useCallback, useContext, useState } from "react";
-import { Link, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { Pages } from "src/pages";
+import { NavLink } from "src/shared/components/nav-link.component";
 import { AuthContext } from "src/supporting/authenticated/auth.context";
 export const LoginPage: React.FC = () => {
     const [username, setUsername] = useState("");
@@ -49,13 +50,23 @@ export const LoginPage: React.FC = () => {
             <p>Token: {token}</p>
 
             <p>
-                <Link to={Pages.HOME_PRIVAT}>Go To Home</Link>
+                <NavLink
+                    to={Pages.HOME_PRIVAT}
+                    title="Home"
+                    restriction={{ mustBeAuthenticated: true }}
+                />
             </p>
             <p>
-                <Link to={Pages.ACKNOWLEDGEMENTS_PUBLIC}>Acknowledgements</Link>
+                <NavLink
+                    to={Pages.ACKNOWLEDGEMENTS_PUBLIC}
+                    title="Acknowledgements"
+                />
             </p>
             <p>
-                <Link to={Pages.GAME_HISTORY_PUBLIC}>See Previous Games</Link>
+                <NavLink
+                    to={Pages.GAME_HISTORY_PUBLIC}
+                    title="Previous Games"
+                />
             </p>
         </div>
     );

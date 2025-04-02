@@ -3,7 +3,7 @@ import {
     GetHistoryResponse,
 } from "@shared/src/core/game/dto";
 import { useEffect, useState } from "react";
-import { Link } from "react-router";
+import { NavLink } from "react-router";
 import { Pages } from "src/pages";
 import { defaultConfigService } from "src/supporting/config/config.service";
 
@@ -40,7 +40,7 @@ export const GameHistoryPage: React.FC = () => {
             <h1>Game History</h1>
             <FinishedGames games={history} />
             <p>
-                <Link to={Pages.LOGIN_PUBLIC}>Back to Login</Link>
+                <NavLink title="Back to Login" to={Pages.LOGIN_PUBLIC} />
             </p>
         </div>
     );

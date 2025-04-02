@@ -13,7 +13,6 @@ export const SocketProvider = (props: {
     const ws = useRef<null | SocketIO>(null);
 
     useEffect(() => {
-        console.log("I ran with token:" + (token ?? "undefined"));
         if (!token) {
             return;
         }
