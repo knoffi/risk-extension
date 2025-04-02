@@ -7,17 +7,12 @@ const CACHE_NAME = "v0.17";
 // cachekOnly: static resources for precachingw
 
 // TODO: What happens, when a user logs in with a different profile. Will the service worker return cached results from the previous profile? This seems like a security risk, if two different people use the same device
-
-function isDevMode() {
-    return self.location.origin.match(/^http:\/\/localhost:5173/);
-}
-
 function isCacheFirstNetworkSecond(event) {
-    return !isDevMode() && isPreCacheable(event);
+    return isPreCacheable(event);
 }
 
 function isNetworkFirstCacheSecond(event) {
-    return !isDevMode() && event.request.method === "GET";
+    return event.request.method === "GET";
 }
 
 function isNetworkOnlyNoCache(event) {
@@ -27,7 +22,7 @@ function isNetworkOnlyNoCache(event) {
     const isSocketPolling = url.match(
         /\/socket\.io\/\?EIO=4&transport=polling/
     );
-    return method !== "GET" || isDevMode() || isHealthCheck || isSocketPolling;
+    return method !== "GET" || isHealthCheck || isSocketPolling;
 }
 
 function isStaleWhileRevalidate() {
