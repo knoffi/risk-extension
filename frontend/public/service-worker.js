@@ -7,6 +7,10 @@ const CACHE_NAME = "v0.17";
 // cachekOnly: static resources for precachingw
 
 // TODO: What happens, when a user logs in with a different profile. Will the service worker return cached results from the previous profile? This seems like a security risk, if two different people use the same device
+function isDevMode() {
+    return self.location.origin.match(/^http:\/\/localhost:5173/);
+}
+
 function isCacheFirstNetworkSecond(event) {
     return isPreCacheable(event);
 }
@@ -18,11 +22,19 @@ function isNetworkFirstCacheSecond(event) {
 function isNetworkOnlyNoCache(event) {
     const { url, method } = event.request;
 
+    if (method !== "GET") return true;
+
     const isHealthCheck = url.match(/\/api\/health-check/);
     const isSocketPolling = url.match(
         /\/socket\.io\/\?EIO=4&transport=polling/
     );
-    return method !== "GET" || isHealthCheck || isSocketPolling;
+    return isHealthCheck || isSocketPolling;
+}
+
+function isLoginRequest(request) {
+    const { url, method } = request;
+
+    return url.endsWith("/api/authentication/login") && method === "POST";
 }
 
 function isStaleWhileRevalidate() {
@@ -34,11 +46,65 @@ const addResourcesToCache = async (resources) => {
     await cache.addAll(resources);
 };
 
+let LOGIN_URL;
+
+const modifiedRequest = async (request, cache) => {
+    if (isLoginRequest(request)) return request;
+
+    const userNeverLoggedIn = !LOGIN_URL;
+    if (userNeverLoggedIn) {
+        console.warn("Never logged in :: " + request.url);
+
+        return request;
+    }
+
+    const apiBaseUrl = LOGIN_URL.replace("authentication/login", "");
+    const socketHandshakeUrl = LOGIN_URL.replace(
+        "api/authentication/login",
+        "socket.io/?EIO="
+    );
+    console.error(apiBaseUrl);
+    const needsApiToken =
+        request.url.startsWith(apiBaseUrl) ||
+        request.url.startsWith(socketHandshakeUrl);
+    if (!needsApiToken) {
+        console.error("Is not API call :: " + request.url);
+        return request;
+    }
+
+    const cachedLogins = await cache.matchAll(
+        "http://localhost:3001/api/authentication/login"
+    );
+
+    if (cachedLogins.length === 0) {
+        return request;
+    }
+
+    if (cachedLogins.length > 1) {
+        throw new Error("Multiple logins cached");
+    }
+
+    console.error("Api call :: " + request.url);
+
+    const token = (await cachedLogins[0].json()).token;
+    console.warn("token:" + token);
+    // TODO: Can't I also define 'const newHeaders = {...request.headers, Authentication: "..."}'
+    const newHeaders = new Headers(request.headers);
+    newHeaders.set("Authorization", `Bearer ${token}`);
+    console.warn("Added header:: Authentication:" + ("Bearer " + token));
+
+    return new Request(request, {
+        // Learn more here https://stackoverflow.com/questions/49503836/serviceworker-is-it-possible-to-add-headers-to-url-request
+        // and here https://stackoverflow.com/questions/39109789/what-limitations-apply-to-opaque-responses
+        mode: "cors",
+        headers: newHeaders,
+    });
+};
+
 const PRE_CACHE = [
-    // Path for "/" is needed for PWA precache only
+    // NOTE: Path for "/" is needed for PWA precache only
     "/",
     "/index.html",
-    "/Login",
     "/login",
     "/manifest.json",
     "/bundle.js",
@@ -67,13 +133,35 @@ self.addEventListener("activate", () => {
 });
 
 self.addEventListener("fetch", async (event) => {
-    if (isNetworkOnlyNoCache(event)) {
+    if (isLoginRequest(event.request)) {
+        return event.respondWith(
+            (async () => {
+                const loginRes = await fetch(event.request);
+                if (loginRes.status <= 299) {
+                    const clonedRes = loginRes.clone();
+
+                    const cache = await caches.open(CACHE_NAME);
+                    await cache.put(event.request.url, clonedRes);
+
+                    LOGIN_URL = event.request.url;
+                }
+                return loginRes;
+            })()
+        );
+    }
+
+    if (isNetworkOnlyNoCache(event) || isDevMode()) {
         console.debug(
             "NWO : " + event.request.destination + " :: " + event.request.url
         );
-        // Returning without overriding event.respondWith
-        console.debug("NWO :: " + event.request.url);
-        return;
+        return event.respondWith(
+            (async () => {
+                const cache = await caches.open(CACHE_NAME);
+                const request = await modifiedRequest(event.request, cache);
+
+                return fetch(request);
+            })()
+        );
     }
 
     if (isCacheFirstNetworkSecond(event)) {
@@ -91,7 +179,9 @@ self.addEventListener("fetch", async (event) => {
                     return cachedResponse;
                 }
 
-                const fetchedResponse = await fetch(event.request);
+                const fetchedResponse = await fetch(
+                    modifiedRequest(event.request, cache)
+                );
                 console.debug("CF from network served :: " + event.request.url);
                 await cache.put(event.request.url, fetchedResponse.clone());
                 console.debug("CF from network cached :: " + event.request.url);
@@ -108,7 +198,9 @@ self.addEventListener("fetch", async (event) => {
             (async () => {
                 const cache = await caches.open(CACHE_NAME);
                 try {
-                    const fetchedResponse = await fetch(event.request);
+                    const fetchedResponse = await fetch(
+                        modifiedRequest(event.request, cache)
+                    );
                     console.debug(
                         "NF from network served :: " + event.request.url
                     );
