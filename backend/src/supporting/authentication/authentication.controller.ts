@@ -25,7 +25,11 @@ export class AuthenticationController {
           if (!isLoginDto(loginDto)) {
                // TODO: think about implementing unified error response and use error response dtos from /shared
                throw new BadRequestException(
-                    JSON.stringify(Object.keys(loginDto))
+                    JSON.stringify(
+                         typeof loginDto === "object" && loginDto
+                              ? Object.keys(loginDto)
+                              : "Dto needs to be an object"
+                    )
                );
           }
 

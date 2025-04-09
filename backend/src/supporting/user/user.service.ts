@@ -18,7 +18,7 @@ export interface ReadUserService {
           password: string
      ) => Promise<Omit<User, "password">>;
 
-     create: (newUser: CreateUserDto) => Promise<void>;
+     create: (newUser: CreateUserDto) => Promise<undefined>;
 }
 
 @Injectable()
@@ -27,7 +27,7 @@ export class UserService implements ReadUserService {
           @Inject(UserRepository) private users: ReadUsersRepo & WriteUsersRepo
      ) {}
 
-     public async create(newUser: CreateUserDto): Promise<void> {
+     public create(newUser: CreateUserDto): Promise<undefined> {
           return this.users.create({
                name: newUser.name,
                password: newUser.password,

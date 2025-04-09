@@ -11,6 +11,10 @@ export class CreateGameMasterUser1743151135734 implements MigrationInterface {
                where: { name: RoleNames.GAMER_MASTER },
           });
 
+          if (!role) {
+               throw new Error("Role missing: " + RoleNames.GAMER_MASTER);
+          }
+
           return queryRunner.manager.insert(UserEntity, {
                name: GAME_MASTER_NAME,
                password: "12345",

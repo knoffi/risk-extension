@@ -7,7 +7,7 @@ import { Repository } from "typeorm";
 
 export interface ReadRolesRepo {
      findAll: () => Promise<Role[]>;
-     findById: (id: RoleId) => Promise<Role>;
+     findById: (id: RoleId) => Promise<Role | null>;
 }
 
 @Injectable()
@@ -21,7 +21,7 @@ export class RoleRepository implements ReadRolesRepo {
           return results.map((entity) => transform(entity));
      }
 
-     public async findById(id: RoleId): Promise<Role> {
+     public async findById(id: RoleId): Promise<Role | null> {
           return this.roles.findOne({ where: { id } });
      }
 }

@@ -10,7 +10,7 @@ export interface ReadUsersRepo {
 }
 
 export interface WriteUsersRepo {
-     create: (user: CreateUserEntity) => Promise<void>;
+     create: (user: CreateUserEntity) => Promise<undefined>;
 }
 
 @Injectable()
@@ -32,12 +32,12 @@ export class UserRepository implements ReadUsersRepo, WriteUsersRepo {
           return results.map((entity) => transform(entity));
      }
 
-     public create({
+     public async create({
           name,
           password,
           roleId,
-     }: CreateUserEntity): Promise<void> {
-          return void this.users.insert({ name, password, roleId });
+     }: CreateUserEntity): Promise<undefined> {
+          await this.users.insert({ name, password, roleId });
      }
 }
 

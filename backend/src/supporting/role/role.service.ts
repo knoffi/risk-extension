@@ -8,7 +8,7 @@ import {
 
 export interface ReadRoles {
      findAll: () => Promise<Role[]>;
-     findById: (id: RoleId) => Promise<Role>;
+     findById: (id: RoleId) => Promise<Role | null>;
 }
 
 @Injectable()
@@ -19,7 +19,7 @@ export class RoleService implements ReadRoles {
           return this.roles.findAll();
      }
 
-     public async findById(id: RoleId): Promise<Role> {
+     public async findById(id: RoleId): Promise<Role | null> {
           return this.roles.findById(id);
      }
 }

@@ -53,8 +53,6 @@ const modifiedRequest = async (request, cache) => {
 
     const userNeverLoggedIn = !LOGIN_URL;
     if (userNeverLoggedIn) {
-        console.warn("Never logged in :: " + request.url);
-
         return request;
     }
 
@@ -63,12 +61,10 @@ const modifiedRequest = async (request, cache) => {
         "api/authentication/login",
         "socket.io/?EIO="
     );
-    console.error(apiBaseUrl);
     const needsApiToken =
         request.url.startsWith(apiBaseUrl) ||
         request.url.startsWith(socketHandshakeUrl);
     if (!needsApiToken) {
-        console.error("Is not API call :: " + request.url);
         return request;
     }
 
@@ -84,14 +80,10 @@ const modifiedRequest = async (request, cache) => {
         throw new Error("Multiple logins cached");
     }
 
-    console.error("Api call :: " + request.url);
-
     const token = (await cachedLogins[0].json()).token;
-    console.warn("token:" + token);
     // TODO: Can't I also define 'const newHeaders = {...request.headers, Authentication: "..."}'
     const newHeaders = new Headers(request.headers);
     newHeaders.set("Authorization", `Bearer ${token}`);
-    console.warn("Added header:: Authentication:" + ("Bearer " + token));
 
     return new Request(request, {
         // Learn more here https://stackoverflow.com/questions/49503836/serviceworker-is-it-possible-to-add-headers-to-url-request

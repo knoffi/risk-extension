@@ -18,13 +18,13 @@ export class UserController {
 
      @HttpCode(HttpStatus.CREATED)
      @Post("create")
-     async create(@Body() body: CreateUserDto): Promise<void> {
+     create(@Body() body: CreateUserDto): Promise<undefined> {
           return this.userService.create(body);
      }
 
      @HttpCode(HttpStatus.OK)
      @Get()
-     async findAll(): Promise<GetUserResponse[]> {
+     findAll(): Promise<GetUserResponse[]> {
           return this.userService.findAll();
      }
 }
