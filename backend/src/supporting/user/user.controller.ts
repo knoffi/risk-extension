@@ -6,8 +6,10 @@ import {
      HttpStatus,
      Post,
 } from "@nestjs/common";
-import { CreateUserDto } from "@shared/src/supporting/user/dto";
-import { User } from "src/supporting/user/user";
+import {
+     CreateUserDto,
+     GetUserResponse,
+} from "@shared/src/supporting/user/dto";
 import { UserService } from "src/supporting/user/user.service";
 
 @Controller("user")
@@ -22,7 +24,7 @@ export class UserController {
 
      @HttpCode(HttpStatus.OK)
      @Get()
-     async findAll(): Promise<User[]> {
+     async findAll(): Promise<GetUserResponse[]> {
           return this.userService.findAll();
      }
 }

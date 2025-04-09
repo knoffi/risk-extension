@@ -14,3 +14,5 @@ export interface GetUserResponse {
      name: string;
      role: GetRoleResponse;
 }
+
+export type GetAllUserResponse = GetUserResponse[];
