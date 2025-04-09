@@ -4,9 +4,9 @@ import { Pages } from "src/pages";
 import { AuthContext } from "src/supporting/authenticated/auth.context";
 
 export const AuthenticatedGuard = () => {
-    const { token } = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
 
-    if (!token) return <Navigate to={Pages.LOGIN_PUBLIC} />;
+    if (!user) return <Navigate to={Pages.LOGIN_PUBLIC} />;
 
     return <Outlet />;
 };

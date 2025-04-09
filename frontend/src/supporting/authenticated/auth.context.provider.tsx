@@ -2,12 +2,11 @@ import { LoginSuccessResponseDto } from "@shared/src/supporting/auth/dto";
 import React, { useState } from "react";
 import { User } from "src/supporting/authenticated/user";
 import { defaultConfigService } from "src/supporting/config/config.service";
-import { AuthContext, AuthService } from "./auth.context";
+import { AuthContext, UserService } from "./auth.context";
 
 export const AuthProvider = (props: {
     children: React.ReactNode[] | React.ReactNode;
 }) => {
-    const [token, setToken] = useState<string | null>(null);
     const [user, setUser] = useState<User | null>(null);
 
     const origin = defaultConfigService.getApiOrigin();
@@ -26,11 +25,10 @@ export const AuthProvider = (props: {
                 return res.json();
             })
             .then((body: LoginSuccessResponseDto) => {
-                setToken(body.token);
                 setUser(body.user);
             });
 
-    const authService: AuthService = { token, login, user };
+    const authService: UserService = { login, user };
     return (
         <AuthContext.Provider value={authService}>
             {props.children}

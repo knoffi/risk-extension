@@ -26,10 +26,10 @@ export class GameRoomGateway {
      constructor(private authService: AuthenticationService) {}
 
      async handleConnection(socket: Socket) {
-          const { token } = socket.handshake.auth;
+          const token = this.extractToken(socket);
           if (!token || typeof token != "string") {
                socket._error({
-                    message: "Missing auth token or auth token is no string",
+                    message: "Authorization bearer header missing or malformed",
                });
 
                socket.disconnect(true);
@@ -39,7 +39,9 @@ export class GameRoomGateway {
 
           const tokenIsValid = await this.authService.verifyToken(token);
           if (!tokenIsValid) {
-               socket._error({ message: "Auth token found, but was invalid" });
+               socket._error({
+                    message: "Auth token extracted, but the token was invalid",
+               });
 
                socket.disconnect(true);
                console.error(`Closed ${socket.id} due to invalid auth token`);
@@ -70,5 +72,21 @@ export class GameRoomGateway {
           payload: T["payload"]
      ) {
           this.server.emit(event, payload);
+     }
+
+     private extractToken(socket: Socket): string | null {
+          const { authorization } = socket.handshake.headers;
+
+          if (!authorization) return null;
+
+          const [bearer, token, ...others] = authorization.split(" ");
+
+          if (bearer !== "Bearer") return null;
+
+          if (others.length > 0) return null;
+
+          console.log(others.length);
+
+          return token;
      }
 }

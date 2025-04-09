@@ -8,7 +8,7 @@ export const LoginPage: React.FC = () => {
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
-    const { login, token } = useContext(AuthContext);
+    const { login } = useContext(AuthContext);
 
     const onLoginSuccess = useCallback(() => {
         navigate(Pages.HOME_PRIVAT);
@@ -47,7 +47,6 @@ export const LoginPage: React.FC = () => {
                 ></input>
             </div>
             <button onClick={onSubmit}>Submit</button>
-            <p>Token: {token}</p>
 
             <p>
                 <NavLink

@@ -8,17 +8,17 @@ export const SocketProvider = (props: {
     children: ReactNode[] | ReactNode;
 }) => {
     const [isReady, setIsReady] = useState<boolean>(false);
-    const { token } = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
 
     const ws = useRef<null | SocketIO>(null);
 
     useEffect(() => {
-        if (!token) {
+        if (!user) {
             return;
         }
 
         const url = defaultConfigService.getSocketOrigin();
-        const wsSocket = io(url, { auth: { token } });
+        const wsSocket = io(url);
 
         wsSocket.on("connect", () => {
             setIsReady(true);
@@ -38,7 +38,7 @@ export const SocketProvider = (props: {
         ws.current = wsSocket;
 
         return () => void wsSocket.disconnect();
-    }, [token]);
+    }, [user]);
 
     const throwSocketUnreadyError = () => {
         throw new Error("Socket not ready");
