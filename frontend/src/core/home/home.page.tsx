@@ -31,6 +31,12 @@ export const HomePage: React.FC = () => {
                     restriction={{ mustBeAuthenticated: true }}
                 />
             </div>
+            <div>
+                <NavLink
+                    title="Back to Acknowledgements"
+                    to={Pages.ACKNOWLEDGEMENTS_PUBLIC}
+                />
+            </div>
         </div>
     );
 };
