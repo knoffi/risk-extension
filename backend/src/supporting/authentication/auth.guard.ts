@@ -6,8 +6,17 @@ import {
 } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
 import { Request } from "express";
+import { Await } from "src/shared/util/types/await";
+import { NeverVoid } from "src/shared/util/types/never-void";
 import { AuthenticationService } from "src/supporting/authentication/authentication.service";
 import { IS_PUBLIC_KEY } from "src/supporting/authentication/public.decorator";
+
+const USER_KEY = "user";
+export type AuthenticatedRequest = Request & {
+     [USER_KEY]: NeverVoid<
+          Await<ReturnType<AuthenticationService["verifyToken"]>>
+     >;
+};
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -31,7 +40,9 @@ export class AuthGuard implements CanActivate {
                throw new UnauthorizedException();
           }
 
-          request["user"] = user;
+          user satisfies AuthenticatedRequest["user"];
+          request[USER_KEY] = user;
+
           return true;
      }
 

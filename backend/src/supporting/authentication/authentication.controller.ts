@@ -2,14 +2,18 @@ import {
      BadRequestException,
      Body,
      Controller,
+     Get,
      HttpCode,
      HttpStatus,
      Post,
+     Request,
 } from "@nestjs/common";
 import {
      LoginRequestDto,
      LoginSuccessResponseDto,
 } from "@shared/src/supporting/auth/dto";
+import { GetUserResponse } from "@shared/src/supporting/user/dto";
+import { AuthenticatedRequest } from "src/supporting/authentication/auth.guard";
 import { Public } from "src/supporting/authentication/public.decorator";
 import { AuthenticationService } from "./authentication.service";
 
@@ -38,6 +42,12 @@ export class AuthenticationController {
                loginDto.password
           );
           return { token, user };
+     }
+
+     @HttpCode(HttpStatus.OK)
+     @Get("whoami")
+     whoami(@Request() request: AuthenticatedRequest): GetUserResponse {
+          return request.user;
      }
 }
 
