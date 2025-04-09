@@ -1,6 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { Flavor } from "@shared/src/util/flavor";
+import { Await } from "src/shared/util/types/await";
 import {
      ConfigService,
      ReadAuthConfig,
@@ -10,7 +11,6 @@ import { ReadUserService, UserService } from "src/supporting/user/user.service";
 
 type AccessToken = Flavor<"access-token">;
 
-type Await<T> = T extends Promise<infer K> ? K : never;
 type UserFromToken = Await<ReturnType<UserService["login"]>>;
 type DecodedJwt = UserFromToken & {
      iat: number;
