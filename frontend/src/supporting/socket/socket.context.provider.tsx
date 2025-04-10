@@ -22,7 +22,6 @@ export const SocketProvider = (props: {
 
         wsSocket.on("connect", () => {
             setIsReady(true);
-            console.log("I am socket " + wsSocket.id);
         });
         wsSocket.on("connect_error", (error) => {
             // TODO: Implement Error Toast and/or Loading Spinner
