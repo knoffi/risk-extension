@@ -115,7 +115,7 @@ function isPreCacheable(event) {
 
 self.addEventListener("install", (event) => {
     console.debug("SW installed");
-    event.waitUntil(addResourcesToCache(PRE_CACHE));
+    if (!isDevMode()) event.waitUntil(addResourcesToCache(PRE_CACHE));
 });
 
 self.addEventListener("activate", () => {
