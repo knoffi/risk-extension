@@ -1,12 +1,29 @@
-import { useContext } from "react";
-import { Navigate, Outlet } from "react-router";
+import { useContext, useEffect } from "react";
+import { Outlet, useNavigate } from "react-router";
 import { Pages } from "src/pages";
 import { AuthContext } from "src/supporting/authenticated/auth.context";
 
 export const AuthenticatedGuard = () => {
-    const { user } = useContext(AuthContext);
+    const { user, whoami } = useContext(AuthContext);
+    const navigate = useNavigate();
 
-    if (!user) return <Navigate to={Pages.LOGIN_PUBLIC} />;
+    useEffect(() => {
+        whoami()
+            .then(() => {
+                navigate(location.pathname);
+            })
+            .catch(() => {
+                navigate(Pages.LOGIN_PUBLIC);
+            });
+    }, []);
+
+    if (!user) {
+        return (
+            <div>
+                <p>Loading...</p>
+            </div>
+        );
+    }
 
     return <Outlet />;
 };
