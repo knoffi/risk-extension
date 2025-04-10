@@ -1,10 +1,5 @@
-import { defaultConfigService } from "src/supporting/config/config.service";
-
 export const registerServiceWorker = async () => {
-    if (
-        "serviceWorker" in navigator &&
-        defaultConfigService.getEnvironment() !== "LOCAL"
-    ) {
+    if ("serviceWorker" in navigator) {
         try {
             const registration = await navigator.serviceWorker.register(
                 "/service-worker.js",
