@@ -1,6 +1,6 @@
 import { LoginSuccessResponseDto } from "@shared/src/supporting/auth/dto";
 import { GetUserResponse } from "@shared/src/supporting/user/dto";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { User } from "src/supporting/authenticated/user";
 import { defaultConfigService } from "src/supporting/config/config.service";
 import { AuthContext, UserService } from "./auth.context";
@@ -11,8 +11,6 @@ export const AuthProvider = (props: {
     const [user, setUser] = useState<User | null>(null);
 
     const apiOrigin = defaultConfigService.getApiOrigin();
-
-    useEffect(() => setUserOnInit(setUser), []);
 
     const whoami = async (): Promise<void> | never => {
         const res = await fetch(apiOrigin + "/api/authentication/whoami");
@@ -40,7 +38,7 @@ export const AuthProvider = (props: {
             throw new Error(`Log in failed with status ${res.status}`);
 
         const body: LoginSuccessResponseDto = await res.json();
-                setUser(body.user);
+        setUser(body.user);
     };
 
     const authService: UserService = { login, user, whoami };
