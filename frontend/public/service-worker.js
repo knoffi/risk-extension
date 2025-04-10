@@ -171,9 +171,8 @@ self.addEventListener("fetch", async (event) => {
                     return cachedResponse;
                 }
 
-                const fetchedResponse = await fetch(
-                    modifiedRequest(event.request, cache)
-                );
+                const request = await modifiedRequest(event.request, cache);
+                const fetchedResponse = await fetch(request);
                 console.debug("CF from network served :: " + event.request.url);
                 await cache.put(event.request.url, fetchedResponse.clone());
                 console.debug("CF from network cached :: " + event.request.url);
@@ -190,9 +189,8 @@ self.addEventListener("fetch", async (event) => {
             (async () => {
                 const cache = await caches.open(CACHE_NAME);
                 try {
-                    const fetchedResponse = await fetch(
-                        modifiedRequest(event.request, cache)
-                    );
+                    const request = await modifiedRequest(event.request, cache);
+                    const fetchedResponse = await fetch(request);
                     console.debug(
                         "NF from network served :: " + event.request.url
                     );
