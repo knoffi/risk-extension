@@ -17,7 +17,7 @@ export class UserController {
      constructor(private userService: UserService) {}
 
      @HttpCode(HttpStatus.CREATED)
-     @Post("create")
+     @Post()
      create(@Body() body: CreateUserDto): Promise<undefined> {
           return this.userService.create(body);
      }
