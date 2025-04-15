@@ -4,7 +4,7 @@ import { ServeStaticModule } from "@nestjs/serve-static";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { join } from "path";
 import { GameModule } from "src/core/game/game.module";
-import { AuthGuard } from "src/supporting/authentication/auth.guard";
+import { AuthenticatedGuard } from "src/supporting/authentication/authenticated.guard";
 import { ConfigModule } from "src/supporting/config/config.module";
 import { ConfigService } from "src/supporting/config/config.service";
 import { AuthorizedGuard } from "src/supporting/role/authorized.guard";
@@ -38,7 +38,7 @@ import { MonitoringModule } from "./supporting/monitoring/monitoring.module";
      ],
      controllers: [AppController],
      providers: [
-          { provide: APP_GUARD, useClass: AuthGuard },
+          { provide: APP_GUARD, useClass: AuthenticatedGuard },
           { provide: APP_GUARD, useClass: AuthorizedGuard },
      ],
 })

@@ -13,7 +13,7 @@ import {
      LoginSuccessResponseDto,
 } from "@shared/src/supporting/auth/dto";
 import { GetUserResponse } from "@shared/src/supporting/user/dto";
-import { AuthenticatedRequest } from "src/supporting/authentication/auth.guard";
+import { AuthenticatedRequest } from "src/supporting/authentication/authenticated.guard";
 import { Public } from "src/supporting/authentication/public.decorator";
 import { AuthenticationService } from "./authentication.service";
 

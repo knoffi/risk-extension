@@ -19,7 +19,7 @@ export type AuthenticatedRequest = Request & {
 };
 
 @Injectable()
-export class AuthGuard extends BasicRouteGuard implements CanActivate {
+export class AuthenticatedGuard extends BasicRouteGuard implements CanActivate {
      constructor(
           private authService: AuthenticationService,
           protected reflector: Reflector

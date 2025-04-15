@@ -2,7 +2,7 @@ import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
 import { Request } from "express";
 import { BasicRouteGuard } from "src/shared/util/guards/basic.guard";
-import { isAuthenticatedRequest } from "src/supporting/authentication/auth.guard";
+import { isAuthenticatedRequest } from "src/supporting/authentication/authenticated.guard";
 import {
      ALLOWED_ROLES,
      AllowedRoles,
